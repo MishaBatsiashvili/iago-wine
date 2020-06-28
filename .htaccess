@@ -1,0 +1,4 @@
+RewriteEngine On
+
+# block everything except /build/
+RewriteRule !^build/ - [F,NC]

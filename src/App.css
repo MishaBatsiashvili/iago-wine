@@ -1,0 +1,37 @@
+html{
+  font-size: 14px;
+}
+
+body{
+  height: 3000px;
+  padding-top: 71px;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+@media(min-width: 1100px){
+  body{
+    padding-top: 0;
+  }
+}
+
+@media(min-width: 576px){
+  body{
+    margin-left: 30px;
+    margin-right: 30px;
+  }
+}
+
+a:hover{
+  text-decoration: none;
+}
+
+h1,h2,h3,h4,h5,h6,p{
+  margin-bottom: 0;
+}
+
+@media(min-width: 1500px){
+  .h1, h1{
+    font-size: 3.5rem;
+  }
+}

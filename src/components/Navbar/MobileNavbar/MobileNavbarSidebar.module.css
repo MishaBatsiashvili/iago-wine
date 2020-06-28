@@ -1,0 +1,56 @@
+.mobileNavbarSidebarWrp{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 2;
+}
+
+.mobileNavbarSidebar{
+    width: 270px;
+    height: 100%;
+    background: white;
+}
+
+.sidebarLogo{
+    width: 100%;
+}
+
+.navItem{
+    display: block;
+    margin: 15px 30px 0;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #707070;
+    color: #707070;
+    transition: color 0.2s ease;
+}
+
+.navItem:hover{
+    color: #F9B72E;
+}
+
+.sidebarCloseBtn{
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    font-size: 20px;
+    color: #fff;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+
+    z-index: 3;
+}
+
+.sidebarCloseBtn:hover{
+    opacity: 0.6;
+}
+
+.sidebarDarkOverlay{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.4);
+}

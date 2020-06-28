@@ -1,0 +1,67 @@
+.Logo{
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 2;
+}
+
+.LogoWrp{
+    position: relative;
+}
+
+.navItemsOuterWrp,
+.cartWrp{
+    padding-top: 27.5px;
+    padding-bottom: 27.5px;
+}
+
+.navItemsInnerWrp{
+    display: flex;
+    align-items: center;
+    margin: 0;
+}
+
+.navItem{
+    list-style-type: none;
+    margin-right: 18px;
+    color: #707070;
+}
+
+.cartIcon{
+    margin-right: 10px;
+    color: #707070;
+    font-size: 25px;
+}
+
+.cartPrice{
+    color: #707070;
+}
+
+.cartIconWrp{
+    transition: opacity .2s ease;
+    cursor: pointer;
+}
+
+.cartIconWrp:hover{
+    opacity: 0.6;
+}
+
+.cartAmount{
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+
+    top: -10px;
+    right: 2px;
+
+    background: #4AA36B;
+    color: white;
+}
+
+@media (max-width: 1100px) {
+    .desktopNavbar{
+        display: none;
+    }
+}

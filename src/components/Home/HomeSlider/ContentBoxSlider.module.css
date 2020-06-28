@@ -1,0 +1,95 @@
+.contentBoxWrp{
+    width: 90%;
+
+    position: relative;
+    z-index: 2;
+
+    margin-top: 70px;
+    margin-bottom: 140px;
+    margin-left: auto;
+}
+
+@media (min-width: 576px) {
+    .contentBoxWrp {
+        width: 75%;
+    }
+}
+
+@media (min-width: 768px) {
+    .contentBoxWrp {
+        width: 65%;
+    }
+}
+
+@media(min-width: 992px){
+    .contentBoxWrp{
+        margin-top: auto;
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+
+    .contentBoxWrp {
+        width: 45%;
+    }
+}
+
+.contentBoxBtnWrp{
+    display: flex;
+    position: absolute;
+    right: 0;
+}
+
+.contentBox{
+    background: #0C6638;
+    padding: 2.5rem;
+}
+
+.contentBoxBtn{
+    width: 70px;
+    height: 70px;
+    position: relative;
+    background: #054B27;
+    transition: opacity .25s ease;
+
+    cursor: pointer;
+}
+
+.contentBoxBtn:last-child{
+    border-left: 1px solid white;
+}
+
+
+.contentBoxBtn i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+
+    font-size: 20px;
+
+    color: white;
+
+    transition: all .3s ease;
+}
+
+.contentBoxBtn:hover i{
+    color: #F9B72E;
+}
+
+.contentBoxBtn:first-child:hover i{
+    transform: translateX(-75%) translateY(-50%);
+}
+
+.contentBoxBtn:last-child:hover i{
+    transform: translateX(-25%) translateY(-50%);
+}
+
+
+.title{
+    color: white;
+}
+
+.text{
+    color: white;
+    margin-top: 15px;
+}
