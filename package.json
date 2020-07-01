@@ -1,6 +1,5 @@
 {
   "name": "iago-wine",
-  "homepage": "themes/theme1/build",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

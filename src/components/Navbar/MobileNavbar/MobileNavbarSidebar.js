@@ -1,10 +1,10 @@
 import React, {Component, createRef} from "react";
 import {Link} from "react-router-dom";
-import YellowBtn from "../../common/YellowBtn/YellowBtn";
 import { gsap } from "gsap";
 
 import s from "./MobileNavbarSidebar.module.css";
 import GreenLogoUrl from "../../../assets/images/logo.png";
+import BaseBtn from "../../common/NormalBtns/BaseBtn";
 
 class MobileNavbarSidebar extends Component {
     sidebarWrpRef = createRef();
@@ -60,7 +60,7 @@ class MobileNavbarSidebar extends Component {
                         <Link to={'/career'} className={s.navItem}>Career</Link>
                         <Link to={'/blog'} className={s.navItem}>Blog</Link>
                         <Link to={'/menu'} className={s.navItem} style={{borderBottom: 'none'}}>
-                            <YellowBtn text={'Order Online'} />
+                            <BaseBtn btnType={'Yellow'} text={'Online Shop'} />
                         </Link>
                     </div>
                 </div>

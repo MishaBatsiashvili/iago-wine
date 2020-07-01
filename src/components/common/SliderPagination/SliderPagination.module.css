@@ -1,0 +1,39 @@
+.wrp{
+    display: flex;
+    justify-content: center;
+    padding: 30px 0;
+}
+
+.wrp.abs{
+    position: absolute;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9;
+
+    padding: 0;
+}
+
+.pagItem{
+    display: block;
+
+    width: 10px;
+    height: 10px;
+    margin: 0 5px;
+
+    background: #b6b6b6;
+
+    border-radius: 50%;
+}
+
+.pagItem.pointer{
+    cursor: pointer;
+}
+
+.pagItem.light{
+    background: white;
+}
+
+.pagItem.active{
+    background: #F9B72E;
+}

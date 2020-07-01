@@ -1,0 +1,39 @@
+.btn{
+    padding: 5px 10px;
+    font-size: 14px;
+    position: relative;
+    transform: perspective(1px) translateZ(0);
+    overflow: hidden;
+
+    transition: all .3s ease;
+}
+
+.btn.md{
+    padding: 10px 15px;
+    font-size: 16px;
+}
+.btn.lg{
+    padding: 15px 20px;
+    font-size: 17px;
+}
+
+
+.btn::before{
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100%;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -4;
+
+    transform: translateY(100%);
+
+    transition: all .3s ease-in-out;
+}
+
+.btn:hover:before{
+    transform: translateY(0);
+}

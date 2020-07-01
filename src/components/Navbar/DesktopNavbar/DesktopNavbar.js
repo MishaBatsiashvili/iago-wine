@@ -6,7 +6,7 @@ import {
 } from 'react-bootstrap';
 import LogoUrl from '../../../assets/images/logo.png';
 import s from './DesktopNavbar.module.css';
-import YellowBtn from "../../common/YellowBtn/YellowBtn";
+import BaseBtn from "../../common/NormalBtns/BaseBtn";
 
 class DesktopNavbar extends Component {
     render(){
@@ -28,11 +28,9 @@ class DesktopNavbar extends Component {
                                             <nav className={s.navItemsOuterWrp}>
                                                 <ul className={s.navItemsInnerWrp}>
                                                     <li className={s.navItem}>Home</li>
-                                                    <li className={s.navItem}>About Us</li>
+                                                    <li className={s.navItem}>Our Story</li>
                                                     <li className={s.navItem}>Contact</li>
-                                                    <li className={s.navItem}>Career</li>
-                                                    <li className={s.navItem}>Blog</li>
-                                                    <YellowBtn text={'Online Shop'} />
+                                                    <BaseBtn btnType={'Yellow'} size={'md'} text={'Online Shop'} />
                                                 </ul>
                                             </nav>
                                         </div>

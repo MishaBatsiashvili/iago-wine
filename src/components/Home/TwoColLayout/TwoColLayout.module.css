@@ -1,0 +1,68 @@
+.marginTop{
+    margin-top: 50px;
+}
+
+.marginTopMobile{
+    margin-top: 40px;
+}
+
+.title{
+    margin-bottom: 30px;
+}
+
+.text{
+    font-size: 16px;
+    margin-bottom: 30px;
+    color: #707070;
+}
+
+.imgWrp{
+    position: relative;
+    width: 100%;
+    padding-top: 90%;
+}
+
+.img{
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+.marginBottom{
+    margin-bottom: 20px;
+}
+
+@media (min-width: 992px) {
+    .reverse{
+        order: 2;
+    }
+
+    .marginBottom{
+        margin-bottom: 0;
+    }
+
+    .marginTop{
+        margin-top: 100px;
+    }
+
+    .marginTopMobile{
+        margin-top: 0;
+    }
+
+    .leftImgCol{
+        padding-right: 0;
+    }
+
+    .rightImgCol{
+        padding-left: 0;
+    }
+
+    .textWrp{
+        padding: 40px;
+    }
+}

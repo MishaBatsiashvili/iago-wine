@@ -1,6 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import 'swiper/css/swiper.min.css';
 
 import {
   BrowserRouter as Router,
@@ -12,7 +13,7 @@ import Navbar from "./components/Navbar/Navbar";
 
 function App() {
   return (
-    <Router basename={'themes/theme1/build'}>
+    <Router basename={''}>
 
       <Navbar />
 

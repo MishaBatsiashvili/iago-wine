@@ -1,6 +1,6 @@
 import React, {Component, createRef} from "react";
 import s from './Cart.module.css';
-import DarkYellowBtn from "../../common/DarkYellowBtn/DarkYellowBtn";
+import DarkYellowFilledBtn from "../../common/DarkYellowFilledBtn/DarkYellowFilledBtn";
 import CartTitle from "./CartTitle";
 import CartItems from "./CartItems";
 import CartSummary from "./CartSummary";
@@ -56,7 +56,7 @@ class Cart extends Component {
                         <CartItems />
                         <CartSummary />
                     </div>
-                    <DarkYellowBtn btnClasses={s.checkoutBtn} text={'Checkout'} />
+                    <DarkYellowFilledBtn btnClasses={s.checkoutBtn} text={'Checkout'} />
                 </div>
             </div>
         )

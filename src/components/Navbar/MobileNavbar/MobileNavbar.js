@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import LogoUrl from '../../../assets/images/logo-white.png';
+import LogoUrl from '../../../assets/images/logo.png';
 import s from './MobileNavbar.module.css';
 import MobileNavbarSidebar from "./MobileNavbarSidebar";
 

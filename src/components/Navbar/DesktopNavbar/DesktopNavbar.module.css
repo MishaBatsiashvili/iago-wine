@@ -1,13 +1,27 @@
 .Logo{
     position: absolute;
-    width: 100%;
     top: 0;
+    bottom: 0;
     left: 0;
-    z-index: 2;
+    right: 0;
+
+    margin: auto;
+
+    width: 80%;
+    height: 80%;
+
+    object-fit: contain;
 }
 
 .LogoWrp{
-    position: relative;
+    position: absolute;
+
+    width: 100%;
+    padding-top: 80%;
+
+    background: #383c40;
+
+    z-index: 2;
 }
 
 .navItemsOuterWrp,
@@ -23,6 +37,7 @@
 }
 
 .navItem{
+    font-size: 16px;
     list-style-type: none;
     margin-right: 18px;
     color: #707070;
@@ -49,14 +64,16 @@
 
 .cartAmount{
     position: absolute;
-    width: 20px;
-    height: 20px;
+
+    width: 23px;
+    height: 23px;
+
     border-radius: 50%;
 
     top: -10px;
     right: 2px;
 
-    background: #4AA36B;
+    background: #F9B72E;
     color: white;
 }
 

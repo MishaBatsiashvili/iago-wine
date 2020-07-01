@@ -1,13 +1,12 @@
 import React, {createRef} from 'react';
-import Swiper from 'swiper'
-import 'swiper/css/swiper.min.css';
+import Swiper from 'swiper';
 import s from './HomeSlider.module.css';
 
-import {Container, Col, Row} from "react-bootstrap";
+import {Container} from "react-bootstrap";
 import ContentBoxSlider from './ContentBoxSlider';
 
 class HomeSlider extends React.Component {
-
+    swiperRef = createRef();
     state={
         slides: [
             {
@@ -26,18 +25,50 @@ class HomeSlider extends React.Component {
                 slideBoundType: 0, // 0 - product bound; 1 - category bound
                 slideBoundId: 0, // id of either product if slideBoundType is 0 or category if slideBoundType is 1
             },
+            {
+                id: 3,
+                imgLink: 'http://assets.suelo.pl/soup/img/photos/slider-dessert.jpg',
+                slideTitle: 'This is title #3',
+                slideText: '###3 Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                slideBoundType: 0, // 0 - product bound; 1 - category bound
+                slideBoundId: 0, // id of either product if slideBoundType is 0 or category if slideBoundType is 1
+            },
         ],
+        currentSlideIndex: 0,
     }
 
-    swiperRef = createRef();
+    // lifecycle methods
     componentDidMount() {
         this.swiperInstance = new Swiper(this.swiperRef.current, {
+            // autoplay: {
+            //     delay: 5000,
+            //     disableOnInteraction: false,
+            // },
+        });
+        const swiperInstance = this.swiperInstance;
 
+        swiperInstance.slideTo(this.state.currentSlideIndex);
+        swiperInstance.on('slideChange', () => {
+            this.setCurrentSlide(swiperInstance.activeIndex);
+        });
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if(this.state.currentSlideIndex !== prevState.currentSlideIndex){
+            const swiperInstance = this.swiperInstance;
+            swiperInstance.slideTo(this.state.currentSlideIndex);
+        }
+    }
+
+    // /.
+
+    setCurrentSlide = (newSlideIndex) => {
+        this.setState({
+            currentSlideIndex:  newSlideIndex,
         });
     }
 
     render() {
-
         const slidesJSX = () => {
             return this.state.slides.map(slide => {
                 return (
@@ -59,7 +90,10 @@ class HomeSlider extends React.Component {
                                 </div>
                             </div>
 
-                            <ContentBoxSlider />
+                            <ContentBoxSlider
+                                currentSlideIndex={this.state.currentSlideIndex}
+                                setCurrentSlide={this.setCurrentSlide}
+                                slides={this.state.slides} />
                         </div>
 
                     </Container>

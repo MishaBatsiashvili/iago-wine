@@ -1,0 +1,40 @@
+.wrp{
+    background: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.name{
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.desc{
+    margin-bottom: 25px;
+    color: #b6b6b6;
+}
+
+.imgWrp{
+    position: relative;
+    width: 100%;
+    padding-top: 110%;
+    background: #F5F5F5;
+}
+
+.img{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+
+    width: 90%;
+    height: 80%;
+
+    object-fit: contain;
+}
+
+.productWrp{
+    margin-bottom: 60px;
+}

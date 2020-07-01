@@ -1,0 +1,22 @@
+.item::before{
+    content: "";
+
+    display: block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+
+    background: #F9B72E;
+
+    margin-right: 10px;
+}
+
+.item{
+    list-style-type: none;
+    display: flex;
+    align-items: center;
+
+    font-size: 16px;
+
+    margin-bottom: 5px;
+}

@@ -1,0 +1,13 @@
+.custom{
+    border: 2px solid #F9B72E;
+    color: #F9B72E;
+    background: transparent;
+}
+
+.custom::before{
+    background: #F9B72E;
+}
+
+.custom:hover{
+    color: white;
+}
