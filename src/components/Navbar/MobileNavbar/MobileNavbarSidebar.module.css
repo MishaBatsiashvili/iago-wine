@@ -17,6 +17,12 @@
     width: 100%;
 }
 
+
+.langImg{
+    height: 40px;
+    margin: 10px 30px 0;
+}
+
 .navItem{
     display: block;
     margin: 15px 30px 0;

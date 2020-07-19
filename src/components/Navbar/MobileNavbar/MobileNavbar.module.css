@@ -25,7 +25,9 @@
     height: 55px;
     display: block;
     margin: 0 auto;
+    filter: brightness(0);
 }
+
 
 .cartWrp{
     position: absolute;

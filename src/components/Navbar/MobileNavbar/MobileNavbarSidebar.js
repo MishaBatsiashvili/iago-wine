@@ -51,9 +51,9 @@ class MobileNavbarSidebar extends Component {
                     <i className={`fas fa-times ${s.sidebarCloseBtn}`}
                         onClick={this.props.onSidebarCloseBtnClicked}></i>
 
-                    <img src={GreenLogoUrl} className={s.sidebarLogo} alt=""/>
+                    {/*<img src={GreenLogoUrl} className={s.sidebarLogo} alt=""/>*/}
 
-                    <div>
+                    <div className={'pt-3'}>
                         <Link to={'/home'} className={s.navItem}>Home</Link>
                         <Link to={'/about'} className={s.navItem}>About Us</Link>
                         <Link to={'/contact'} className={s.navItem}>Contact</Link>
@@ -61,6 +61,9 @@ class MobileNavbarSidebar extends Component {
                         <Link to={'/blog'} className={s.navItem}>Blog</Link>
                         <Link to={'/menu'} className={s.navItem} style={{borderBottom: 'none'}}>
                             <BaseBtn btnType={'Yellow'} text={'Online Shop'} />
+                        </Link>
+                        <Link to={this.props.langUrl}>
+                            <img className={s.langImg} src={this.props.langImg} alt=""/>
                         </Link>
                     </div>
                 </div>

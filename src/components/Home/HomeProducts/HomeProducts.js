@@ -9,37 +9,6 @@ import chinuriGreenImg from '../../../assets/images/bottles/chinuri-green.png'
 import chinuriYellowImg from '../../../assets/images/bottles/chinuri-yellow.png'
 import marinaImg from '../../../assets/images/bottles/marina.png'
 
-const placeholderData = [
-    {
-        id: 1,
-        name: 'Chinuri Wine #1',
-        desc: 'Beef, Carrot, Cheese, French Fries',
-        price: '15.99',
-        imageLink: anettaImg,
-    },
-    {
-        id: 2,
-        name: 'Chinuri Wine #2',
-        desc: 'Beef, Carrot, Cheese, French Fries',
-        price: '10.99',
-        imageLink: chinuriGreenImg,
-    },
-    {
-        id: 3,
-        name: 'Chinuri Wine #3',
-        desc: 'Beef, Carrot, Cheese, French Fries',
-        price: '12.99',
-        imageLink: chinuriYellowImg,
-    },
-    {
-        id: 3,
-        name: 'Chinuri Wine #3',
-        desc: 'Beef, Carrot, Cheese, French Fries',
-        price: '12.99',
-        imageLink: marinaImg,
-    },
-]
-
 const HomeProducts = props => {
     return (
         <Container className={s.wrp}>
@@ -49,8 +18,8 @@ const HomeProducts = props => {
             </div>
 
             <Row className={`justify-content-center ${s.productsWrp}`}>
-                <Col md={'9'}>
-                    <Products productsArr={placeholderData} />
+                <Col md={10} lg={9} >
+                    <Products addCartItem={props.addCartItem} lang={props.lang} productsArr={props.products} />
                 </Col>
             </Row>
 

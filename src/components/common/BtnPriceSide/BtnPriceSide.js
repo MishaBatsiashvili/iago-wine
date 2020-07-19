@@ -7,6 +7,7 @@ const BtnPriceSide = props => {
 
     const renderBaseBtn = (className) => (
         <BaseBtn
+            onBtnClicked={props.onBtnClicked}
             className={className}
             btnType={props.btnType ? props.btnType : 'YellowWhite'}
             size={'md'}

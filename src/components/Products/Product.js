@@ -11,18 +11,19 @@ const Product = props => {
     // imageLink: 'http://assets.suelo.pl/soup/img/products/product-pizza.jpg',
     return (
         <Col md={6} className={s.productWrp}>
-            <div className={s.imgWrp}>
-                <img src={props.imageLink} className={s.img} alt=""/>
-            </div>
-            <div className={s.wrp}>
-                <p className={s.name}>{props.name}</p>
-                <p className={s.desc}>{props.desc}</p>
-                <BtnPriceSide
-                    centered
-                    btnType={'Yellow'}
-                    text={'Add to Cart'}
-                    price={props.price}/>
-            </div>
+           <div className={s.imgWrp}>
+              <img src={props.imageLink} className={s.img} alt=""/>
+           </div>
+           <div className={s.wrp}>
+              <p className={s.name}>{props.name}</p>
+              <p className={s.desc}>{props.desc}</p>
+              <BtnPriceSide
+                 onBtnClicked={() => props.addCartItem(props.id)}
+                 centered
+                 btnType={'Yellow'}
+                 text={'Add to Cart'}
+                 price={props.price}/>
+           </div>
         </Col>
     )
 }

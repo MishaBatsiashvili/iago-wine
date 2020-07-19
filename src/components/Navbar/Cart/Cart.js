@@ -53,8 +53,11 @@ class Cart extends Component {
                         <CartTitle
                             onCartCloseBtnClicked={this.props.onCartCloseBtnClicked}
                             text={'Your Cart'} />
-                        <CartItems />
-                        <CartSummary />
+                        <CartItems
+                           changeAmnt={this.props.changeAmnt}
+                           lang={this.props.lang}
+                           cartData={this.props.cartData} />
+                        <CartSummary cartData={this.props.cartData} />
                     </div>
                     <DarkYellowFilledBtn btnClasses={s.checkoutBtn} text={'Checkout'} />
                 </div>

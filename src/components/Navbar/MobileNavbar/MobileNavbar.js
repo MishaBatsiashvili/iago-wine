@@ -9,15 +9,19 @@ class DesktopNavbar extends Component {
             <div className={s.mobileNavbar}>
 
                 <MobileNavbarSidebar
-                    onSidebarCloseBtnClicked={this.props.onSidebarCloseBtnClicked}
-                    showSidebar={this.props.showSidebar} />
+                   lang={this.props.lang}
+                   langUrl={this.props.langUrl}
+                   langImg={this.props.langImg}
+                   onSidebarCloseBtnClicked={this.props.onSidebarCloseBtnClicked}
+                   showSidebar={this.props.showSidebar}/>
 
                 <div className={'position-relative w-100'}>
 
                     <img src={LogoUrl} className={s.logo} alt=""/>
 
                     {/*burger icon*/}
-                    <div onClick={this.props.onSidebarBtnClicked} className={`d-flex justify-content-start h-100 ${s.burgerWrp}`}>
+                    <div onClick={this.props.onSidebarBtnClicked}
+                         className={`d-flex justify-content-start h-100 ${s.burgerWrp}`}>
                         <div className={'d-flex align-items-center'}>
                             <i className={`fas fa-bars ${s.burgerIcon}`}></i>
                         </div>
@@ -25,10 +29,12 @@ class DesktopNavbar extends Component {
                     {/*/.*/}
 
                     {/*cart*/}
-                    <div onClick={this.props.onCartBtnClicked} className={`d-flex justify-content-end h-100 ${s.cartWrp}`}>
+                    <div onClick={this.props.onCartBtnClicked}
+                         className={`d-flex justify-content-end h-100 ${s.cartWrp}`}>
                         <div className={'d-flex align-items-center'}>
                             <div className={s.cartIconWrp}>
-                                <div className={`d-flex align-items-center justify-content-center ${s.cartAmount}`}>3</div>
+                                <div className={`d-flex align-items-center justify-content-center ${s.cartAmount}`}>3
+                                </div>
                                 <i className={`fas fa-shopping-cart ${s.cartIcon}`}></i>
                             </div>
                         </div>

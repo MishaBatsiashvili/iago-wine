@@ -77,6 +77,16 @@
     color: white;
 }
 
+.langImg{
+    height: 30px;
+    margin-left: 20px;
+    transition: opacity .3s ease;
+}
+
+.langImg:hover{
+    opacity: 0.6;
+}
+
 @media (max-width: 1100px) {
     .desktopNavbar{
         display: none;

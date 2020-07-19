@@ -8,7 +8,26 @@ import LogoUrl from '../../../assets/images/logo.png';
 import s from './DesktopNavbar.module.css';
 import BaseBtn from "../../common/NormalBtns/BaseBtn";
 
+import {Link} from 'react-router-dom';
+
 class DesktopNavbar extends Component {
+
+    calcCartTotalPrice = () => {
+        const total = this.props.cartData.products.reduce((accum, cur) => {
+            const price = parseFloat(cur.price)*100;
+            const amount = parseInt(cur.amount);
+            return accum + amount * price;
+        }, 0)
+        return total/100;
+    }
+
+    calcCartItemsAmnt = () => {
+        return this.props.cartData.products.reduce((accum, cur) => {
+            const amount = parseInt(cur.amount);
+            return accum + amount;
+        }, 0)
+    }
+
     render(){
         return (
                 <div className={s.desktopNavbar}>
@@ -23,7 +42,7 @@ class DesktopNavbar extends Component {
                                         </div>
                                     </Col>
 
-                                    <Col md={7}>
+                                    <Col md={6}>
                                         <div className={'d-flex align-items-center'}>
                                             <nav className={s.navItemsOuterWrp}>
                                                 <ul className={s.navItemsInnerWrp}>
@@ -36,15 +55,21 @@ class DesktopNavbar extends Component {
                                         </div>
                                     </Col>
 
-                                    <Col md={2}>
-                                        <div className={`d-flex justify-content-end h-100 ${s.cartWrp}`}>
-                                            <div className={`d-flex align-items-center ${s.cartIconWrp}`} onClick={this.props.onCartBtnClicked} >
-                                                <div className={'position-relative'}>
-                                                    <div className={`d-flex align-items-center justify-content-center ${s.cartAmount}`}>3</div>
-                                                    <i className={`fas fa-shopping-cart ${s.cartIcon}`}></i>
+                                    <Col md={3}>
+                                        <div className={'d-flex align-items-center justify-content-end h-100'}>
+                                            <div className={`d-flex justify-content-end h-100 ${s.cartWrp}`}>
+                                                <div className={`d-flex align-items-center ${s.cartIconWrp}`} onClick={this.props.onCartBtnClicked} >
+                                                    <div className={'position-relative'}>
+                                                        <div className={`d-flex align-items-center justify-content-center ${s.cartAmount}`}>{this.calcCartItemsAmnt()}</div>
+                                                        <i className={`fas fa-shopping-cart ${s.cartIcon}`}></i>
+                                                    </div>
+                                                    <div className={s.cartPrice}>{this.calcCartTotalPrice()} GEL</div>
                                                 </div>
-                                                <div className={s.cartPrice}>13.99 GEL</div>
                                             </div>
+
+                                            <Link to={this.props.langUrl}>
+                                                <img className={s.langImg} src={this.props.langImg} alt=""/>
+                                            </Link>
                                         </div>
                                     </Col>
 
