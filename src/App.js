@@ -15,6 +15,7 @@ import {connect} from "react-redux";
 import customAxios from "./api/customAxios";
 
 import {addCartItem, changeAmnt, getCart, removeCartItem} from "./store/reducers/cartReducer";
+import Checkout from "./components/Checkout/Checkout";
 
 class App extends React.Component {
 
@@ -45,16 +46,32 @@ class App extends React.Component {
 
       return (
          <>
-            <Navbar changeAmnt={this.props.changeAmnt} cartData={this.props.cartData} lang={this.props.lang}/>
+            <Navbar
+               changeAmnt={this.props.changeAmnt}
+               cartData={this.props.cartData}
+               removeCartItem={this.props.removeCartItem}
+               lang={this.props.lang}
+            />
 
-            <Switch>
-               <Route exact path={'/'} render={(renderProps) =>
-                  <Home {...renderProps} addCartItem={this.addCartItem} />
-               }/>
-               <Route exact path={'/about'} component={About} />
-            </Switch>
+            <div className={'h-100 d-flex flex-column justify-content-between'}>
+               <div>
+                  <Switch>
 
-            <Footer/>
+                     <Route exact path={'/'} render={(renderProps) =>
+                        <Home {...renderProps} addCartItem={this.addCartItem} />
+                     }/>
+
+                     <Route exact path={'/checkout'} component={Checkout}/>
+
+                     <Route exact path={'/about'} component={About} />
+
+                  </Switch>
+               </div>
+
+               <div>
+                  <Footer/>
+               </div>
+            </div>
          </>
       );
    }

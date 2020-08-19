@@ -103,19 +103,29 @@
 
 
 
-.summary{
+
+.summaryLeft{
     padding: 20px;
     font-size: 0.95rem;
-}
-.summaryLeft{
-    color: #b6b6b6;
-    text-align: right;
-}
-.summaryRight{
-    color: #383c40;
     font-weight: bold;
-    text-align: left;
 }
+
+.summaryRight{
+    width: 110px;
+    padding: 20px;
+    font-size: 0.95rem;
+    font-weight: bold;
+}
+
+/*.summaryLeft{*/
+/*    color: #b6b6b6;*/
+/*    text-align: right;*/
+/*}*/
+/*.summaryRight{*/
+/*    color: #383c40;*/
+/*    font-weight: bold;*/
+/*    text-align: left;*/
+/*}*/
 
 .summaryLeftLg, .summaryRightLg{
     font-size: 1.3rem;
@@ -131,4 +141,9 @@
 
 .amntInput{
     width: 70px;
+}
+
+.cartEmptyText{
+    padding: 20px;
+    text-align: center;
 }

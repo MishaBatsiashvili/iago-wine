@@ -37,6 +37,22 @@ class Navbar extends Component {
         });
     }
 
+    calcCartTotalPrice = () => {
+        const total = this.props.cartData.products.reduce((accum, cur) => {
+            const price = parseFloat(cur.price)*100;
+            const amount = parseInt(cur.amount);
+            return accum + amount * price;
+        }, 0)
+        return total/100;
+    }
+
+    calcCartItemsAmnt = () => {
+        return this.props.cartData.products.reduce((accum, cur) => {
+            const amount = parseInt(cur.amount);
+            return accum + amount;
+        }, 0)
+    }
+
     render(){
 
         //parsing lang(language) query param
@@ -49,6 +65,8 @@ class Navbar extends Component {
         return (
             <>
                 <DesktopNavbar
+                   totalPrice={this.calcCartTotalPrice()}
+                   itemsAmnt={this.calcCartItemsAmnt()}
                    cartData={this.props.cartData}
                    lang={this.props.lang}
                    langUrl={langUrl}
@@ -56,6 +74,9 @@ class Navbar extends Component {
                    onCartBtnClicked={this.onCartBtnClicked}/>
 
                 <MobileNavbar
+                   totalPrice={this.calcCartTotalPrice()}
+                   itemsAmnt={this.calcCartItemsAmnt()}
+                   cartData={this.props.cartData}
                    lang={this.props.lang}
                    langUrl={langUrl}
                    langImg={langImg}
@@ -65,6 +86,7 @@ class Navbar extends Component {
                    onCartBtnClicked={this.onCartBtnClicked}/>
 
                 <Cart
+                   removeCartItem={this.props.removeCartItem}
                    changeAmnt={this.props.changeAmnt}
                    lang={this.props.lang}
                    cartData={this.props.cartData}

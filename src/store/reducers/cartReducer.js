@@ -71,7 +71,17 @@ export const changeAmnt = (id, newAmnt, cartId) => {
 
 export const removeCartItem = (id, cartId) => {
    return dispatch => {
-
+      customAxios.post('?action=remove_cart_item', {id: id, cartId: cartId})
+         .then(res => {
+            if(res.data.status === 1){
+               fetchCart(dispatch);
+            } else {
+               console.error('some error has occured');
+            }
+         })
+         .catch(error => {
+            console.error(error);
+         })
    }
 }
 

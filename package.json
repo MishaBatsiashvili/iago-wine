@@ -10,7 +10,9 @@
     "axios": "^0.19.2",
     "bootstrap": "^4.5.0",
     "env-cmd": "^10.1.0",
+    "formik": "^2.1.5",
     "gsap": "^3.3.4",
+    "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
     "react-dom": "^16.13.1",
@@ -19,17 +21,16 @@
     "react-scripts": "3.4.1",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
-    "swiper": "^5.4.5"
+    "swiper": "^5.4.5",
+    "yup": "^0.29.3"
   },
   "scripts": {
     "start:orig": "react-scripts start",
     "start": "env-cmd -f .env.staging react-scripts start",
     "start:prod": "env-cmd -f .env.production react-scripts start",
-
     "build:orig": "react-scripts build",
     "build:staging": "env-cmd -f .env.staging react-scripts build",
     "build": "env-cmd -f .env.production react-scripts build",
-
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

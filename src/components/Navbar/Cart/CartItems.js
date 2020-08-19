@@ -52,7 +52,7 @@ class CartItems extends React.Component {
 
       const cartItemsJSX = () => {
          return this.state.products.map((prod) => (
-               <tr className={s.itemwrp}>
+               <tr key={prod.id} className={s.itemwrp}>
                   <td className={s.itemTitleWrp}>
                      <Link to={'#'} className={s.itemName}>{prod[`name_${this.props.lang}`]}</Link>
                   </td>
@@ -65,7 +65,7 @@ class CartItems extends React.Component {
                         onChange={(e) => this.onAmountChanged(prod.id, e.target.value)}
                         onBlur={(e) => this.props.changeAmnt(prod.id, e.target.value, this.props.cartData.id)}
                      />
-                     <i className="fas fa-trash-alt"></i>
+                     <i onClick={() => this.props.removeCartItem(prod.id, this.props.cartData.id)} className="fas fa-trash-alt"></i>
                   </td>
                </tr>
             ))

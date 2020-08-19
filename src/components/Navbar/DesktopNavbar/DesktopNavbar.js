@@ -12,21 +12,7 @@ import {Link} from 'react-router-dom';
 
 class DesktopNavbar extends Component {
 
-    calcCartTotalPrice = () => {
-        const total = this.props.cartData.products.reduce((accum, cur) => {
-            const price = parseFloat(cur.price)*100;
-            const amount = parseInt(cur.amount);
-            return accum + amount * price;
-        }, 0)
-        return total/100;
-    }
 
-    calcCartItemsAmnt = () => {
-        return this.props.cartData.products.reduce((accum, cur) => {
-            const amount = parseInt(cur.amount);
-            return accum + amount;
-        }, 0)
-    }
 
     render(){
         return (
@@ -37,9 +23,9 @@ class DesktopNavbar extends Component {
                                 <Row>
 
                                     <Col md={3}>
-                                        <div className={s.LogoWrp}>
+                                        <Link to={'/'} className={s.LogoWrp}>
                                             <img src={LogoUrl} className={s.Logo} alt="logo"/>
-                                        </div>
+                                        </Link>
                                     </Col>
 
                                     <Col md={6}>
@@ -60,10 +46,10 @@ class DesktopNavbar extends Component {
                                             <div className={`d-flex justify-content-end h-100 ${s.cartWrp}`}>
                                                 <div className={`d-flex align-items-center ${s.cartIconWrp}`} onClick={this.props.onCartBtnClicked} >
                                                     <div className={'position-relative'}>
-                                                        <div className={`d-flex align-items-center justify-content-center ${s.cartAmount}`}>{this.calcCartItemsAmnt()}</div>
+                                                        <div className={`d-flex align-items-center justify-content-center ${s.cartAmount}`}>{this.props.itemsAmnt}</div>
                                                         <i className={`fas fa-shopping-cart ${s.cartIcon}`}></i>
                                                     </div>
-                                                    <div className={s.cartPrice}>{this.calcCartTotalPrice()} GEL</div>
+                                                    <div className={s.cartPrice}>{this.props.totalPrice} GEL</div>
                                                 </div>
                                             </div>
 

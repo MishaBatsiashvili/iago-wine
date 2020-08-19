@@ -54,12 +54,20 @@ class Cart extends Component {
                             onCartCloseBtnClicked={this.props.onCartCloseBtnClicked}
                             text={'Your Cart'} />
                         <CartItems
+                           removeCartItem={this.props.removeCartItem}
                            changeAmnt={this.props.changeAmnt}
                            lang={this.props.lang}
                            cartData={this.props.cartData} />
                         <CartSummary cartData={this.props.cartData} />
                     </div>
-                    <DarkYellowFilledBtn btnClasses={s.checkoutBtn} text={'Checkout'} />
+
+                    <DarkYellowFilledBtn
+                       linkPath={'/checkout'}
+                       btnClasses={s.checkoutBtn}
+                       text={'Checkout'}
+                       callback={this.props.onCartCloseBtnClicked}
+                    />
+
                 </div>
             </div>
         )

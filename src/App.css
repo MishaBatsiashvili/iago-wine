@@ -3,10 +3,17 @@ html{
 }
 
 body{
-  height: 3000px;
   padding-top: 71px;
   margin-left: 0;
   margin-right: 0;
+}
+
+html, body{
+  height: 100%;
+}
+
+#root{
+  height: 100%;
 }
 
 @media(min-width: 1100px){

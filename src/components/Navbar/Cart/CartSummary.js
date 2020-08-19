@@ -3,7 +3,11 @@ import React from "react";
 import {Col, Container, Row} from "react-bootstrap";
 
 const CartSummary = props => {
-    const deliveryPrice = 5;
+
+    if(!props.cartData.products || props.cartData.products.length === 0){
+        return <div className={s.cartEmptyText}>Your cart is empty</div>
+    }
+
     const calcCartTotalPrice = () => {
         const total = props.cartData.products.reduce((accum, cur) => {
             const price = parseFloat(cur.price)*100;
@@ -14,21 +18,16 @@ const CartSummary = props => {
     }
     const cartTotalPrice = calcCartTotalPrice();
 
-    return (<Container fluid className={s.summary}>
-        <Row className={'mb-1'}>
-            <Col xs={7} className={s.summaryLeft}>Order Total:</Col>
-            <Col xs={5} className={s.summaryRight}>{cartTotalPrice} GEL</Col>
-        </Row>
-        <Row className={'mb-1'}>
-            <Col xs={7} className={s.summaryLeft}>Delivery:</Col>
-            <Col xs={5} className={s.summaryRight}>{deliveryPrice} GEL</Col>
-        </Row>
-        <hr/>
-        <Row>
-            <Col xs={7} className={`${s.summaryLeft} ${s.summaryLeftLg}`}>Total:</Col>
-            <Col xs={5} className={`${s.summaryRight} ${s.summaryLeftLg}`}>{deliveryPrice + cartTotalPrice} GEL</Col>
-        </Row>
-    </Container>)
+    return (
+        <table>
+            <tbody>
+                <tr>
+                    <td className={s.summaryLeft}>Order Total:</td>
+                    <td className={s.summaryRight}>{cartTotalPrice} GEL</td>
+                </tr>
+            </tbody>
+        </table>
+    )
 }
 
 export default CartSummary;

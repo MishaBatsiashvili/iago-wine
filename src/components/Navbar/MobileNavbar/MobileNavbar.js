@@ -33,7 +33,8 @@ class DesktopNavbar extends Component {
                          className={`d-flex justify-content-end h-100 ${s.cartWrp}`}>
                         <div className={'d-flex align-items-center'}>
                             <div className={s.cartIconWrp}>
-                                <div className={`d-flex align-items-center justify-content-center ${s.cartAmount}`}>3
+                                <div className={`d-flex align-items-center justify-content-center ${s.cartAmount}`}>
+                                    {this.props.itemsAmnt}
                                 </div>
                                 <i className={`fas fa-shopping-cart ${s.cartIcon}`}></i>
                             </div>
