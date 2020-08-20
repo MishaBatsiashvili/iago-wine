@@ -64,6 +64,7 @@
 .itemTitleWrp{
     padding: 20px;
     font-size: 0.95rem;
+    width: 252px;
 }
 .itemName{
     color: #383c40;
@@ -85,6 +86,7 @@
     text-align: right;
     display: flex;
     align-items: center;
+    justify-content: flex-end;
 }
 
 .itemActions i{

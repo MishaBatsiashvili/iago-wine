@@ -1,45 +1,137 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import s from './Helpers.module.css';
+import {Col} from "react-bootstrap";
 
-const inputTop = (name, label, errors, touched) => {
+const generateInputTopProps = ({name, label, errors, touched}) => {
+   return {
+      name,
+      label,
+      errors,
+      touched,
+   }
+}
+
+const GENERAL_PROP_TYPES = {
+   label: PropTypes.string.isRequired,
+   name: PropTypes.string.isRequired,
+   values: PropTypes.object.isRequired,
+   errors: PropTypes.object.isRequired,
+   handleChange: PropTypes.func.isRequired,
+   handleBlur: PropTypes.func.isRequired,
+   bootstrapSizeConfig: PropTypes.object,
+}
+
+const DEFAULT_PROPS = {
+   bootstrapSizeConfig: {
+      md: 6
+   }
+}
+
+export const InputTop = ({name, label, errors, touched, noErrors}) => {
+
+   const renderErrors = () => {
+      if(!noErrors){
+         if(touched[name] && errors[name]){
+            return (
+               <div className={s.error}>
+                  {errors[name]}
+               </div>
+            )
+         }
+      }
+
+      return null;
+   }
+
    return (
       <>
          <label htmlFor={name} className={'mb-0'}>{label}</label>
-         {touched[name] && errors[name]
-            ?  <div className={s.error}>
-                  {errors[name]}
-               </div>
-            : null
-         }
+         {renderErrors()}
       </>
    )
 }
 
 export const TextInput = (props) => {
-   console.log(props);
+
+   const inputProps = {
+      id: props.name,
+      name: props.name,
+      type: "text",
+      className: 'form-control mt-2',
+      value: props.values[props.name],
+      onChange: props.onChangeHandler || props.handleChange,
+      onBlur: props.handleBlur,
+   }
+
    return (
-      <div>
-         {inputTop(props.name, props.label, props.errors, props.touched)}
-         <input
-            name={props.name}
-            type="text"
-            className={'form-control'}
-            value={props.value}
-            onChange={props.handleChange}
-            onBlur={props.handleBlur}
-         />
-      </div>
+      <Col {...props.bootstrapSizeConfig} className={'mb-4'}>
+         <InputTop {...generateInputTopProps(props)}/>
+
+         {props.isTextarea
+            ? <textarea {...inputProps} />
+            : <input {...inputProps} />
+         }
+      </Col>
    );
 };
 
 TextInput.propTypes = {
-   label: PropTypes.string.isRequired,
-   name: PropTypes.string.isRequired,
-   values: PropTypes.object.isRequired,
-   errors: PropTypes.object.isRequired,
+   ...GENERAL_PROP_TYPES,
    isTextarea: PropTypes.bool,
-   bootstrapSizeConfig: PropTypes.object,
-   handleChange: PropTypes.func.isRequired,
-   handleBlur: PropTypes.func.isRequired,
 }
+
+TextInput.defaultProps = {
+   ...DEFAULT_PROPS
+}
+
+
+
+
+
+
+
+export const SelectInput = (props) => {
+
+   const selectProps = {
+      id: props.name,
+      name: props.name,
+      className: 'form-control mt-2',
+      value: props.values[props.name],
+      onChange: props.onChangeHandler || props.handleChange,
+      onBlur: props.handleBlur,
+   }
+
+   const outputOptionsJSX = () => {
+      if(!props.options || props.options.length === 0){
+         return null;
+      }
+
+      return props.options.map(
+         el =>
+            <option value={el.id}>{el.name}</option>
+      )
+   }
+
+   return (
+      <Col {...props.bootstrapSizeConfig} className={'mb-4'}>
+         <InputTop {...generateInputTopProps(props)}/>
+         <select {...selectProps}>
+            {outputOptionsJSX()}
+         </select>
+      </Col>
+   );
+};
+
+SelectInput.propTypes = {
+   ...GENERAL_PROP_TYPES,
+   options: PropTypes.array,
+}
+
+SelectInput.defaultProps = {
+   ...DEFAULT_PROPS
+}
+
+
+
+

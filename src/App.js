@@ -2,6 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import 'swiper/css/swiper.min.css';
+import "react-datepicker/dist/react-datepicker.css";
 
 import {
   Switch,
@@ -54,7 +55,7 @@ class App extends React.Component {
             />
 
             <div className={'h-100 d-flex flex-column justify-content-between'}>
-               <div>
+               <div className={'flex-grow-1'}>
                   <Switch>
 
                      <Route exact path={'/'} render={(renderProps) =>

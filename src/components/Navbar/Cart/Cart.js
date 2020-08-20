@@ -61,12 +61,15 @@ class Cart extends Component {
                         <CartSummary cartData={this.props.cartData} />
                     </div>
 
-                    <DarkYellowFilledBtn
-                       linkPath={'/checkout'}
-                       btnClasses={s.checkoutBtn}
-                       text={'Checkout'}
-                       callback={this.props.onCartCloseBtnClicked}
-                    />
+                    {this.props.cartData && this.props.cartData.products.length > 0 ?
+                        <DarkYellowFilledBtn
+                           linkPath={'/checkout'}
+                           btnClasses={s.checkoutBtn}
+                           text={'Checkout'}
+                           callback={this.props.onCartCloseBtnClicked}
+                        />
+                        : null
+                    }
 
                 </div>
             </div>

@@ -1,0 +1,20 @@
+.wrp{
+    padding: 30px;
+    background: white;
+    margin: 50px 0;
+}
+.formTitle{
+    color: #2e3034;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #F3F4F4;
+
+    display: flex;
+    align-items: center;
+}
+
+.formTitleIcon{
+    color: #F9B72E;
+    margin-right: 10px;
+    font-size: 20px;
+}
