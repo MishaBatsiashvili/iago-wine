@@ -28,6 +28,7 @@ const OrderDetails = (props) => {
       return total/100;
    }
    const orderTotalPrice = getOrderTotalPrice();
+   const deliveryPrice = props.chosenDeliveryMethod && props.chosenDeliveryMethod.price || 0;
 
    return (
       <div className={s.wrp}>
@@ -39,7 +40,7 @@ const OrderDetails = (props) => {
                   <tbody>
                   <tr>
                      <td className={s.summaryLeft}>Delivery:</td>
-                     <td className={s.summaryRight}>{} GEL</td>
+                     <td className={s.summaryRight}>{deliveryPrice} GEL</td>
                      <td></td>
                   </tr>
                   <tr>
@@ -49,7 +50,7 @@ const OrderDetails = (props) => {
                   </tr>
                   <tr>
                      <td className={s.summaryLeft}>Total:</td>
-                     <td className={s.summaryRight}>{orderTotalPrice + props.deliveryPrice} GEL</td>
+                     <td className={s.summaryRight}>{orderTotalPrice + deliveryPrice} GEL</td>
                      <td></td>
                   </tr>
                   </tbody>

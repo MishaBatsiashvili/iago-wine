@@ -11,7 +11,7 @@ const CheckoutForm = (props) => {
    const renderDatepicker = () => {
       if(props.deliveryMethods
          && props.deliveryMethods.length > 0
-         && props.deliveryMethods[props.chosenDeliveryMethodIndex].type === '1'){
+         && props.deliveryMethods[props.chosenDeliveryMethodIndex].type === 1){
 
          return (
             <Col md={6} className={'mb-4'}>
@@ -41,7 +41,7 @@ const CheckoutForm = (props) => {
          <form onSubmit={props.handleSubmit} className={'row align-items-end'}>
             <TextInput label={'First Name'} name={'firstName'} {...props} />
             <TextInput label={'Last Name'} name={'lastName'} {...props} />
-            <TextInput label={'Street Address'} name={'street'} {...props} />
+            <TextInput label={'Address'} name={'address'} {...props} />
 
             <TextInput
                {...props}
@@ -69,18 +69,18 @@ const CheckoutForm = (props) => {
                options={props.deliveryMethods}
                onChangeHandler={(e) => {
                   const value = e.target.value;
-                  const index = props.deliveryMethods.findIndex(el => el.id === value);
+                  const index = props.deliveryMethods.findIndex(el => el.id === parseInt(value));
                   props.deliveryMethodChanged(index);
                   props.handleChange(e);
                }}
             />
 
-            {/*<SelectInput*/}
-            {/*   {...props}*/}
-            {/*   label={'Payment Method'}*/}
-            {/*   name={'paymentMethod'}*/}
-            {/*   options={props.deliveryMethods}*/}
-            {/*/>*/}
+            <SelectInput
+               {...props}
+               label={'Payment Method'}
+               name={'paymentMethod'}
+               options={props.paymentMethods}
+            />
 
             {renderDatepicker()}
 

@@ -109,7 +109,7 @@ export const SelectInput = (props) => {
 
       return props.options.map(
          el =>
-            <option value={el.id}>{el.name}</option>
+            <option key={el.id} value={el.id}>{el.name}</option>
       )
    }
 

@@ -9,7 +9,7 @@ import s from './Checkout.module.css'
 import OrderDetails from "./OrderDetails";
 import {connect} from "react-redux";
 import {changeAmnt, removeCartItem} from "../../store/reducers/cartReducer";
-import {getDeliveryMethods} from "../../api/api";
+import {getDeliveryMethods, getPaymentMethods} from "../../api/api";
 
 class Checkout extends Component {
 
@@ -38,7 +38,7 @@ class Checkout extends Component {
             .required('Required'),
          lastName: Yup.string()
             .required('Required'),
-         street: Yup.string()
+         address: Yup.string()
             .required('Required'),
          phone: Yup.string()
             .matches(/^(\+?)([\d]+)$/g, 'Incorrent Number Format (e.g. +995123456789)')
@@ -68,13 +68,21 @@ class Checkout extends Component {
       })
    }
 
+   generateDeliveryMethodsForSelect = () => {
+      return this.state.deliveryMethods.map(el => ({
+         ...el,
+         name: `${el.name} - ${el.price} GEL`
+      }))
+   }
+
    componentDidMount() {
-      getDeliveryMethods()
+      Promise.all([getDeliveryMethods(), getPaymentMethods()])
          .then(res => {
-            if(res.status === 1){
+            if(res[0].status === 1 && res[1].status === 1){
                this.setState({
-                  deliveryMethods: res.methods,
-               })
+                  deliveryMethods: res[0].methods,
+                  paymentMethods: res[1].methods
+               });
             }
          })
    }
@@ -91,6 +99,7 @@ class Checkout extends Component {
                         changeAmnt={this.props.changeAmnt}
                         lang={this.props.lang}
                         cartData={this.props.cartData}
+                        chosenDeliveryMethod={this.state.deliveryMethods[this.state.chosenDeliveryMethodIndex]}
                      />
                   </Col>
                   <Col className={`order-lg-1`} xs={12} lg={7} xl={8}>
@@ -98,12 +107,11 @@ class Checkout extends Component {
                         initialValues={{
                            firstName: '',
                            lastName: '',
-                           street: '',
+                           address: '',
                            phone: '',
                            email: '',
                            comment: '',
                            deliveryMethod: 1,
-                           deliveryTime: '',
                            paymentMethod: 1,
                         }}
                         validationSchema={() => this.validationSchema()}
@@ -117,7 +125,8 @@ class Checkout extends Component {
                         {(fmk) => {
                            return (
                               <CheckoutForm
-                                 deliveryMethods={this.state.deliveryMethods}
+                                 paymentMethods={this.state.paymentMethods}
+                                 deliveryMethods={this.generateDeliveryMethodsForSelect()}
                                  chosenDeliveryMethodIndex={this.state.chosenDeliveryMethodIndex}
                                  deliveryMethodChanged={this.deliveryMethodChanged}
                                  onDeliveryDateChanged={this.onDeliveryDateChanged}
