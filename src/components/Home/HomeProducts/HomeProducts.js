@@ -13,13 +13,17 @@ const HomeProducts = props => {
     return (
         <Container className={s.wrp}>
             <div className={'text-center'}>
-                <span className={s.secondaryText}>Our Store</span>
-                <h1 className={s.mainText}>Find Your Drink</h1>
+                <span className={s.secondaryText}>{props.getStr('our_store', props.lang)}</span>
+                <h1 className={s.mainText}>{props.getStr('purchase_drink', props.lang)}</h1>
             </div>
 
             <Row className={`justify-content-center ${s.productsWrp}`}>
                 <Col md={10} lg={9} >
-                    <Products addCartItem={props.addCartItem} lang={props.lang} productsArr={props.products} />
+                    <Products
+                        addCartItem={props.addCartItem}
+                        lang={props.lang}
+                        getStr={props.getStr}
+                        productsArr={props.products} />
                 </Col>
             </Row>
 

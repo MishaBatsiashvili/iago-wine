@@ -5,10 +5,13 @@ import Cart from "./Cart/Cart";
 import {withRouter} from "react-router-dom";
 import usaFlag from "../../assets/images/flag.png";
 import geoFlag from "../../assets/images/georgia.png";
+import {compose} from "redux";
+import withLang from "../../hoc/withLang";
+import withStrs from "../../hoc/withStrs";
 
 class Navbar extends Component {
 
-    state={
+    state = {
         showSidebar: false,
         showCart: false,
     }
@@ -39,11 +42,11 @@ class Navbar extends Component {
 
     calcCartTotalPrice = () => {
         const total = this.props.cartData.products.reduce((accum, cur) => {
-            const price = parseFloat(cur.price)*100;
+            const price = parseFloat(cur.price) * 100;
             const amount = parseInt(cur.amount);
             return accum + amount * price;
         }, 0)
-        return total/100;
+        return total / 100;
     }
 
     calcCartItemsAmnt = () => {
@@ -53,7 +56,7 @@ class Navbar extends Component {
         }, 0)
     }
 
-    render(){
+    render() {
 
         //parsing lang(language) query param
         const searchParams = new URLSearchParams(this.props.location.search);
@@ -65,36 +68,39 @@ class Navbar extends Component {
         return (
             <>
                 <DesktopNavbar
-                   totalPrice={this.calcCartTotalPrice()}
-                   itemsAmnt={this.calcCartItemsAmnt()}
-                   cartData={this.props.cartData}
-                   lang={this.props.lang}
-                   langUrl={langUrl}
-                   langImg={langImg}
-                   onCartBtnClicked={this.onCartBtnClicked}/>
+                    pageNames={this.props.pageNames}
+                    totalPrice={this.calcCartTotalPrice()}
+                    itemsAmnt={this.calcCartItemsAmnt()}
+                    cartData={this.props.cartData}
+                    lang={this.props.lang}
+                    langUrl={langUrl}
+                    langImg={langImg}
+                    onCartBtnClicked={this.onCartBtnClicked}/>
 
                 <MobileNavbar
-                   totalPrice={this.calcCartTotalPrice()}
-                   itemsAmnt={this.calcCartItemsAmnt()}
-                   cartData={this.props.cartData}
-                   lang={this.props.lang}
-                   langUrl={langUrl}
-                   langImg={langImg}
-                   showSidebar={this.state.showSidebar}
-                   onSidebarCloseBtnClicked={this.onSidebarCloseBtnClicked}
-                   onSidebarBtnClicked={this.onSidebarBtnClicked}
-                   onCartBtnClicked={this.onCartBtnClicked}/>
+                    pageNames={this.props.pageNames}
+                    totalPrice={this.calcCartTotalPrice()}
+                    itemsAmnt={this.calcCartItemsAmnt()}
+                    cartData={this.props.cartData}
+                    lang={this.props.lang}
+                    langUrl={langUrl}
+                    langImg={langImg}
+                    showSidebar={this.state.showSidebar}
+                    onSidebarCloseBtnClicked={this.onSidebarCloseBtnClicked}
+                    onSidebarBtnClicked={this.onSidebarBtnClicked}
+                    onCartBtnClicked={this.onCartBtnClicked}/>
 
                 <Cart
-                   removeCartItem={this.props.removeCartItem}
-                   changeAmnt={this.props.changeAmnt}
-                   lang={this.props.lang}
-                   cartData={this.props.cartData}
-                   showCart={this.state.showCart}
-                   onCartCloseBtnClicked={this.onCartCloseBtnClicked} />
+                    removeCartItem={this.props.removeCartItem}
+                    changeAmnt={this.props.changeAmnt}
+                    lang={this.props.lang}
+                    getStr={this.props.getStr}
+                    cartData={this.props.cartData}
+                    showCart={this.state.showCart}
+                    onCartCloseBtnClicked={this.onCartCloseBtnClicked}/>
             </>
         )
     }
 }
 
-export default withRouter(Navbar);
+export default compose(withRouter, withLang, withStrs)(Navbar);

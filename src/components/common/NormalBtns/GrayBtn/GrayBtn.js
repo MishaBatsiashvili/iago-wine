@@ -6,6 +6,7 @@ const GrayBtn = props => {
 
     return (
         <button
+            type={props.type}
             className={`${props.baseClass} ${props.sizeClass} ${s.custom}`}
             onClick={props.onBtnClicked}>
             {props.text}

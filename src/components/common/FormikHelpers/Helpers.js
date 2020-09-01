@@ -94,7 +94,7 @@ TextInput.defaultProps = {
 export const SelectInput = (props) => {
 
    const selectProps = {
-      id: props.name,
+      id: props.name_en,
       name: props.name,
       className: 'form-control mt-2',
       value: props.values[props.name],
@@ -109,7 +109,7 @@ export const SelectInput = (props) => {
 
       return props.options.map(
          el =>
-            <option key={el.id} value={el.id}>{el.name}</option>
+            <option key={el.id} value={el.id}>{el.name_en}</option>
       )
    }
 

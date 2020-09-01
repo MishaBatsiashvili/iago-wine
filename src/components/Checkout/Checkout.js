@@ -8,46 +8,56 @@ import bannerImg from "../../assets/images/marani.jpg";
 import s from './Checkout.module.css'
 import OrderDetails from "./OrderDetails";
 import {connect} from "react-redux";
-import {changeAmnt, removeCartItem} from "../../store/reducers/cartReducer";
-import {getDeliveryMethods, getPaymentMethods} from "../../api/api";
+import {
+   changeAmnt,
+   checkout,
+   removeCartItem, resetCheckoutFormData,
+   saveCheckoutFormData,
+   sendVerifCode
+} from "../../store/reducers/cartReducer";
+import {getDeliveryMethods, getPaymentMethods, sendFormToCheckout} from "../../api/api";
+import PhoneValidator from "./PhoneValidator";
+import CheckoutSuccess from "./CheckoutSuccess";
+import {compose} from "redux";
+import withLang from "../../hoc/withLang";
+import withStrs from "../../hoc/withStrs";
 
 class Checkout extends Component {
 
    state={
       deliveryMethods: [],
-      /*
-      id
-      name
-      price
-       */
-
       chosenDeliveryMethodIndex: 0,
-      // should be equal to index of chosen delivery method -> inital value is 0
-
       paymentMethods: [],
-      /*
-      id
-      name
-      */
       deliveryDate: new Date(),
+
+      showPhoneValidator: false,
+      serverError: '',
+
+      showCheckoutSuccess: false,
+      invoiceId: null,
+      invoiceKey: null,
+
+      formData: {},
    }
+
+
 
    validationSchema = () => {
       const configObj = {
          firstName: Yup.string()
-            .required('Required'),
+            .required(this.props.getStr('required_error')),
          lastName: Yup.string()
-            .required('Required'),
+            .required(this.props.getStr('required_error')),
          address: Yup.string()
-            .required('Required'),
+            .required(this.props.getStr('required_error')),
          phone: Yup.string()
-            .matches(/^(\+?)([\d]+)$/g, 'Incorrent Number Format (e.g. +995123456789)')
-            .required('Required'),
+            .matches(/^(\+?)([\d]+)$/g, this.props.getStr('number_error'))
+            .required(this.props.getStr('required_error')),
          email: Yup.string()
             .email('Invalid email')
-            .required('Required'),
+            .required(this.props.getStr('required_error')),
          comment: Yup.string()
-            .max(150, 'Maximum character count reached'),
+            .max(150, this.props.getStr('maximum_char_count_error')),
       }
 
 
@@ -71,9 +81,72 @@ class Checkout extends Component {
    generateDeliveryMethodsForSelect = () => {
       return this.state.deliveryMethods.map(el => ({
          ...el,
-         name: `${el.name} - ${el.price} GEL`
+         name_en: `${el.name_en} - ${el.price} GEL`,
+         name_ge: `${el.name_ge} - ${el.price} GEL`,
       }))
    }
+
+   setShowPhoneValidator = (isVisible) => {
+      this.setState({
+         showPhoneValidator: isVisible,
+      })
+   }
+
+   setShowSuccessPopup = (isVisible) => {
+      this.setState({
+         showCheckoutSuccess: isVisible,
+      })
+   }
+
+   onSubmitHandler = (verifCode) => {
+      // reset server error
+      this.setState({
+         serverError: '',
+      });
+
+      this.props.checkout(this.props.checkoutFormData, verifCode)
+          .then(res => {
+             this.setShowPhoneValidator(false);
+             if(res.status === 1){
+                // show checkout success modal
+               this.setState({
+                  showCheckoutSuccess: true,
+                  invoiceId: res.invoice_id,
+                  invoiceKey: res.invoice_key,
+               });
+             } else {
+                // show error on top of form
+                this.setState({
+                   serverError: 'Error occured, try again later',
+                });
+             }
+          });
+   }
+
+   generateSubmitFormData = (values) => {
+      return {
+         firstName: values.firstName,
+         lastName: values.lastName,
+         address: values.address,
+         phone: values.phone,
+         email: values.email,
+         comment: values.comment,
+
+         deliveryMethod: values.deliveryMethod,
+         paymentMethod: values.paymentMethod,
+         cartId: this.props.cartData.id,
+      }
+   }
+
+
+
+
+
+
+
+
+
+
 
    componentDidMount() {
       Promise.all([getDeliveryMethods(), getPaymentMethods()])
@@ -87,10 +160,34 @@ class Checkout extends Component {
          })
    }
 
+   componentWillUnmount() {
+      this.props.resetCheckoutFormData();
+   }
+
+   componentDidUpdate(prevProps, prevState, snapshot) {
+      if(prevProps.checkoutFormData !== this.props.checkoutFormData){
+         console.log(this.props.checkoutFormData);
+      }
+   }
+
    render() {
       return (
          <div className={s.wrp}>
             <TitleBanner imageURL={bannerImg} text={'Checkout'}/>
+
+            <CheckoutSuccess
+                showCheckoutSuccess={this.state.showCheckoutSuccess}
+                onClosePopup={() => this.setShowSuccessPopup(false)}
+                invoiceId={this.state.invoiceId}
+                invoiceKey={this.state.invoiceKey}
+            />
+
+            <PhoneValidator
+                onSubmitHandler={this.onSubmitHandler}
+                onClosePopup={() => this.setShowPhoneValidator(false)}
+                showPhoneValidator={this.state.showPhoneValidator}
+            />
+
             <Container>
                <Row>
                   <Col className={`order-lg-2`} xs={12} lg={5} xl={4}>
@@ -98,6 +195,7 @@ class Checkout extends Component {
                         removeCartItem={this.props.removeCartItem}
                         changeAmnt={this.props.changeAmnt}
                         lang={this.props.lang}
+                        getStr={this.props.getStr}
                         cartData={this.props.cartData}
                         chosenDeliveryMethod={this.state.deliveryMethods[this.state.chosenDeliveryMethodIndex]}
                      />
@@ -105,20 +203,39 @@ class Checkout extends Component {
                   <Col className={`order-lg-1`} xs={12} lg={7} xl={8}>
                      <Formik
                         initialValues={{
-                           firstName: '',
-                           lastName: '',
-                           address: '',
-                           phone: '',
-                           email: '',
+                           firstName: 'mish',
+                           lastName: 'bats',
+                           address: '123',
+                           phone: '551384184',
+                           email: 'n@m.com',
                            comment: '',
                            deliveryMethod: 1,
-                           paymentMethod: 1,
+                           paymentMethod: 2,
                         }}
                         validationSchema={() => this.validationSchema()}
                         onSubmit={(values, {setSubmitting}) => {
-                           if (!this.props.cartData || this.props.cartData.length === 0) {
+
+                           this.setState({
+                              serverError: '',
+                           });
+
+                           if (!this.props.cartData || this.props.cartData.products.length === 0) {
+                              this.setState({
+                                 serverError: 'Cart is Empty',
+                              });
                               return;
                            }
+
+                           // show mobile verification number
+                           this.setShowPhoneValidator(true);
+
+                           // save checkout form data in redux
+                           this.props.saveCheckoutFormData(this.generateSubmitFormData(values));
+
+                           // send mobile verification code
+                           this.props.sendVerifCode(values.phone, this.props.cartData.id);
+
+
                            setSubmitting(false);
                         }}
                      >
@@ -131,6 +248,10 @@ class Checkout extends Component {
                                  deliveryMethodChanged={this.deliveryMethodChanged}
                                  onDeliveryDateChanged={this.onDeliveryDateChanged}
                                  deliveryDate={this.state.deliveryDate}
+                                 serverError={this.state.serverError}
+
+                                 lang={this.props.lang}
+                                 getStr={this.props.getStr}
                                  {...fmk}
                               />
                            )
@@ -146,13 +267,21 @@ class Checkout extends Component {
 }
 
 const mapStateToProps = state => ({
-   lang: state.app.lang,
    cartData: state.cart.cartData,
+   checkoutFormData: state.cart.checkoutFormData,
 })
 
 const mapDispatchToProps = dispatch => ({
    removeCartItem: (id, cartId) => dispatch(removeCartItem(id, cartId)),
-   changeAmnt: (id, newAmnt, cartId) => dispatch(changeAmnt(id, newAmnt, cartId))
+   changeAmnt: (id, newAmnt, cartId) => dispatch(changeAmnt(id, newAmnt, cartId)),
+   saveCheckoutFormData: (formData) => dispatch(saveCheckoutFormData(formData)),
+   resetCheckoutFormData: () => dispatch(resetCheckoutFormData()),
+   sendVerifCode: (phone, cartId) => dispatch(sendVerifCode(phone, cartId)),
+   checkout: (formData, verifCode) => dispatch(checkout(formData, verifCode))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Checkout);
+export default compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    withLang,
+    withStrs,
+    )(Checkout);

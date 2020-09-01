@@ -10,13 +10,17 @@ const Products = props => {
     // imageLink: 'http://assets.suelo.pl/soup/img/products/product-pizza.jpg',
     const products = () => {
         return props.productsArr.map(prod => {
-            return <Product key={prod.id}
-                            id={prod.id}
-                            name={prod[`name_${props.lang}`]}
-                            desc={prod[`descr_${props.lang}`]}
-                            price={prod.price}
-                            addCartItem={props.addCartItem}
-                            imageLink={'http://iago.ge/images/'+prod.img} />
+            return <Product
+                key={prod.id}
+                id={prod.id}
+                name={prod[`name_${props.lang}`]}
+                desc={prod[`descr_${props.lang}`]}
+                price={prod.price}
+                addCartItem={props.addCartItem}
+                imageLink={'http://iago.ge/images/' + prod.img}
+                lang={props.lang}
+                getStr={props.getStr}
+            />
         })
     }
 

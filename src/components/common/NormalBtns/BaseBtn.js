@@ -38,7 +38,9 @@ const BaseBtn = props => {
                 onBtnClicked={props.onBtnClicked}
                 baseClass={`${s.btn} ${props.className}`}
                 sizeClass={sizeClass}
-                text={props.text} />
+                text={props.text}
+                type={props.type}
+            />
         )
     }
     const btnLinkRender = () => {

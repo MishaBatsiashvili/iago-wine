@@ -4,11 +4,7 @@ import {Col} from "react-bootstrap";
 import BtnPriceSide from "../common/BtnPriceSide/BtnPriceSide";
 
 const Product = props => {
-    // id: 2,
-    // name: 'Beef Stake #2',
-    // desc: 'Beef, Carrot, Cheese, French Fries',
-    // price: '15.99',
-    // imageLink: 'http://assets.suelo.pl/soup/img/products/product-pizza.jpg',
+
     return (
         <Col md={6} className={s.productWrp}>
            <div className={s.imgWrp}>
@@ -21,7 +17,7 @@ const Product = props => {
                  onBtnClicked={() => props.addCartItem(props.id)}
                  centered
                  btnType={'Yellow'}
-                 text={'Add to Cart'}
+                 text={props.getStr('add_to_cart', props.lang)}
                  price={props.price}/>
            </div>
         </Col>

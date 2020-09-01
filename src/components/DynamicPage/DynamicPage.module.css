@@ -1,0 +1,29 @@
+.wrp{
+    background: #F3F4F4;
+    padding-bottom: 40px;
+    height: 100%;
+}
+
+.contentWrp{
+    margin-top: -150px;
+    padding: 30px;
+    background: white;
+}
+
+@media(min-width: 576px){
+    .contentWrp{
+        padding: 70px;
+    }
+}
+
+.textWrp{
+    margin-top: 30px;
+}
+
+.textWrp *{
+    font-family: sans-serif !important;
+}
+
+.banner{
+    padding-top: 100px;
+}

@@ -55,8 +55,8 @@ class ContentBoxSlider extends Component {
             return this.props.slides.map(slide => {
                 return (
                     <div className={`swiper-slide ${s.swiperSlide}`} key={slide.id} >
-                        <h1 className={s.title}>{slide.slideTitle}</h1>
-                        <p className={s.text}>{slide.slideText}</p>
+                        <h1 className={s.title}>{slide[`title_${this.props.lang}`]}</h1>
+                        <p className={s.text}>{slide[`text_${this.props.lang}`]}</p>
                     </div>
                 )
             })

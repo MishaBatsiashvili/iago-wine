@@ -54,11 +54,11 @@ class MobileNavbarSidebar extends Component {
                     {/*<img src={GreenLogoUrl} className={s.sidebarLogo} alt=""/>*/}
 
                     <div className={'pt-3'}>
-                        <Link to={'/home'} className={s.navItem}>Home</Link>
-                        <Link to={'/about'} className={s.navItem}>About Us</Link>
-                        <Link to={'/contact'} className={s.navItem}>Contact</Link>
-                        <Link to={'/career'} className={s.navItem}>Career</Link>
-                        <Link to={'/blog'} className={s.navItem}>Blog</Link>
+                        <Link to={'/'} className={s.navItem}  onClick={this.props.onSidebarCloseBtnClicked}>Home</Link>
+                        {this.props.pageNames.map(page => {
+                            return <Link key={page.name} to={`/page/${page.name}`} className={s.navItem} onClick={this.props.onSidebarCloseBtnClicked}>{page.title_en}</Link>
+                        })}
+                        <Link to={'/contact'} className={s.navItem} onClick={this.props.onSidebarCloseBtnClicked}>Contact</Link>
                         <Link to={'/menu'} className={s.navItem} style={{borderBottom: 'none'}}>
                             <BaseBtn btnType={'Yellow'} text={'Online Shop'} />
                         </Link>

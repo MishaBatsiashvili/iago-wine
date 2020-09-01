@@ -1,15 +1,19 @@
 //action constants
 import customAxios from "../../api/customAxios";
 import qs from "querystring";
+import {sendFormToCheckout, sendVerifCodeApi} from "../../api/api";
 
 const GET_CART = 'GET_CART';
 const ADD_CART_ITEM = 'ADD_CART_ITEM';
+const SAVE_CHECKOUT_FORM_DATA = 'SAVE_CHECKOUT_FORM_DATA';
+const RESET_CHECKOUT_FORM_DATA = 'RESET_CHECKOUT_FORM_DATA';
 
 //initial state
 const initState = {
    cartData: {
 
    },
+   checkoutFormData: null,
 }
 
 //reducer
@@ -26,6 +30,17 @@ const homePageReducer = (state = initState, action) => {
             ...state,
          }
          break;
+      case SAVE_CHECKOUT_FORM_DATA:
+         return {
+            ...state,
+            checkoutFormData: action.formData,
+         }
+         break;
+      case RESET_CHECKOUT_FORM_DATA:
+         return {
+            ...state,
+            checkoutFormData: null,
+         }
       default:
          return state;
    }
@@ -35,8 +50,18 @@ export default homePageReducer;
 
 
 //action creators
-// export const follow = (userId) => ({type: FOLLOW, userId: userId});
+export const saveCheckoutFormData = (formData) => {
+   return {
+      type: SAVE_CHECKOUT_FORM_DATA,
+      formData: formData,
+   }
+}
 
+export const resetCheckoutFormData = () => {
+   return {
+      type: RESET_CHECKOUT_FORM_DATA,
+   }
+}
 
 //thunk creators
 const fetchCart = (dispatch) => {
@@ -52,9 +77,7 @@ export const getCart = () => {
 
 export const addCartItem = (itemId) => {
    return dispatch => {
-      return customAxios.post('?action=add_cart_item', {item_id: itemId}).then(res => {
-         dispatch({type: ADD_CART_ITEM, itemId: itemId});
-      });
+      return customAxios.post('?action=add_cart_item', {item_id: itemId})
    }
 }
 
@@ -84,4 +107,24 @@ export const removeCartItem = (id, cartId) => {
          })
    }
 }
+
+
+export const sendVerifCode = (phone, cartId) => {
+   return dispatch => {
+      return sendVerifCodeApi(phone, cartId);
+   }
+}
+
+export const checkout = (formData, verifCode) => {
+   return dispatch => {
+
+      // including verification code
+      formData.verif = verifCode;
+
+      // submitting checkout form
+      return sendFormToCheckout(formData);
+   }
+}
+
+
 

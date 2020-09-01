@@ -22,7 +22,7 @@ const CartSummary = props => {
         <table>
             <tbody>
                 <tr>
-                    <td className={s.summaryLeft}>Order Total:</td>
+                    <td className={s.summaryLeft}>{props.getStr('order', props.lang)}:</td>
                     <td className={s.summaryRight}>{cartTotalPrice} GEL</td>
                 </tr>
             </tbody>

@@ -1,0 +1,61 @@
+.wrp{
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 9;
+}
+
+.wrp, .darkBg{
+    width: 100%;
+    height: 100%;
+}
+
+.darkBg{
+    background: rgba(0,0,0,0.5);
+    position: absolute;
+}
+
+.box{
+    width: 80%;
+    max-width: 500px;
+    background: white;
+
+    position: absolute;
+    left: 50%;
+    top: 50%;
+
+    padding: 30px;
+}
+
+.title{
+    color: #707070;
+}
+
+.par{
+    color: #707070;
+}
+
+.closeBtn{
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(30%, -30%);
+
+    width: 40px;
+    height: 40px;
+
+    border-radius: 50%;
+    background: #F9B72E;
+    color: white;
+
+    cursor: pointer;
+    transition: all .2s ease;
+}
+
+
+.closeBtn i{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

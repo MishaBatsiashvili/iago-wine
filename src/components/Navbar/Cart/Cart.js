@@ -42,6 +42,8 @@ class Cart extends Component {
         }
     }
 
+
+
     render(){
         return (
             <div ref={this.outerWrpRef} className={s.outerWrp}>
@@ -52,20 +54,23 @@ class Cart extends Component {
                     <div className={s.innerScroll}>
                         <CartTitle
                             onCartCloseBtnClicked={this.props.onCartCloseBtnClicked}
-                            text={'Your Cart'} />
+                            text={this.props.getStr('your_cart', this.props.lang)} />
                         <CartItems
                            removeCartItem={this.props.removeCartItem}
                            changeAmnt={this.props.changeAmnt}
                            lang={this.props.lang}
                            cartData={this.props.cartData} />
-                        <CartSummary cartData={this.props.cartData} />
+                        <CartSummary
+                            lang={this.props.lang}
+                            getStr={this.props.getStr}
+                            cartData={this.props.cartData} />
                     </div>
 
                     {this.props.cartData && this.props.cartData.products.length > 0 ?
                         <DarkYellowFilledBtn
                            linkPath={'/checkout'}
                            btnClasses={s.checkoutBtn}
-                           text={'Checkout'}
+                           text={this.props.getStr('checkout', this.props.lang)}
                            callback={this.props.onCartCloseBtnClicked}
                         />
                         : null

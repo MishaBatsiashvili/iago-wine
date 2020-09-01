@@ -3,8 +3,11 @@ import s from './Footer.module.css';
 import {Col, Container, Row, Form} from "react-bootstrap";
 
 import logoUrl from '../../assets/images/logo.png';
+import withLang from "../../hoc/withLang";
+import withStrs from "../../hoc/withStrs";
 
 const Footer = props => {
+
     return (
         <div className={s.wrp}>
             <Container>
@@ -15,24 +18,24 @@ const Footer = props => {
 
                     <Col xs={12} sm={6} lg={4} className={'pl-lg-5'}>
                         <div className={s.textItemWrp}>
-                            <h4>Phone</h4>
+                            <h4>{props.getStr('phone', props.lang)}</h4>
                             <p>+123456789</p>
                         </div>
 
                         <div className={s.textItemWrp}>
-                            <h4>Address</h4>
+                            <h4>{props.getStr('address', props.lang)}</h4>
                             <p>Address placeholder #1</p>
                         </div>
                     </Col>
 
                     <Col sm={6} md={4}>
                         <div className={s.textItemWrp}>
-                            <h4>E-Mail</h4>
+                            <h4>{props.getStr('email', props.lang)}</h4>
                             <p>example@example.com</p>
                         </div>
 
                         <div className={s.textItemWrp}>
-                            <h4>Social</h4>
+                            <h4>{props.getStr('social', props.lang)}</h4>
                             <div className={'d-flex mt-3'}>
                                 <div className={s.iconWrp}>
                                     <i className="fab fa-facebook-f"></i>
@@ -50,4 +53,4 @@ const Footer = props => {
     )
 }
 
-export default Footer;
+export default withStrs(withLang(Footer));

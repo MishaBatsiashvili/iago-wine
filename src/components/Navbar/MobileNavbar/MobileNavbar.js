@@ -4,16 +4,17 @@ import s from './MobileNavbar.module.css';
 import MobileNavbarSidebar from "./MobileNavbarSidebar";
 
 class DesktopNavbar extends Component {
-    render(){
+    render() {
         return (
             <div className={s.mobileNavbar}>
 
                 <MobileNavbarSidebar
-                   lang={this.props.lang}
-                   langUrl={this.props.langUrl}
-                   langImg={this.props.langImg}
-                   onSidebarCloseBtnClicked={this.props.onSidebarCloseBtnClicked}
-                   showSidebar={this.props.showSidebar}/>
+                    pageNames={this.props.pageNames}
+                    lang={this.props.lang}
+                    langUrl={this.props.langUrl}
+                    langImg={this.props.langImg}
+                    onSidebarCloseBtnClicked={this.props.onSidebarCloseBtnClicked}
+                    showSidebar={this.props.showSidebar}/>
 
                 <div className={'position-relative w-100'}>
 

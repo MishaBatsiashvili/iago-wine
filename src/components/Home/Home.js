@@ -9,8 +9,11 @@ import StoryImage from '../../assets/images/marani.jpg';
 import ExportImage from '../../assets/images/export.jpg';
 import ArticleImage from '../../assets/images/article.jpg';
 import withLang from "../../hoc/withLang";
-import {getProducts} from "../../store/reducers/homePageReducer";
+import {getAllSections, getAllSlides, getProducts} from "../../store/reducers/homePageReducer";
 import {connect} from "react-redux";
+import {imagePathGenerator} from "../../api/api";
+import {compose} from "redux";
+import withStrs from "../../hoc/withStrs";
 ///.
 
 
@@ -18,130 +21,85 @@ class Home extends Component {
 
     componentDidMount() {
         this.props.getProducts();
+        this.props.getAllSections();
+        this.props.getAllSlides();
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        // console.log(this.props.products);
+        console.log(this.props);
     }
 
     render(){
 
+        if(!this.props.sections || !this.props.slides){
+            return null;
+        }
 
+        const aboutSec = this.props.sections['about'];
+        const wineExportSec = this.props.sections['wine_export'];
+        const articlesSec = this.props.sections['articles'];
 
         return (
             <div>
-                <HomeSlider />
+                <HomeSlider
+                    slides={this.props.slides}
+                    lang={this.props.lang}
+                    getStr={this.props.getStr}
+                />
 
                 <TwoColLayout
                     reverseMode
                     marginTop
-                    imgLink={StoryImage}
-                    title={'Wine Export'}
-                    text={''}
+                    imgLink={ imagePathGenerator(aboutSec['image']) }
+                    text={aboutSec[`text_${this.props.lang}`]}
+                    title={aboutSec[`title_${this.props.lang}`]}
                     btnText={'See More'}
+                    btnLink={'/page/about'}
                 />
 
-                <HomeProducts addCartItem={this.props.addCartItem} lang={this.props.lang} products={this.props.products} />
+                <HomeProducts
+                    addCartItem={this.props.addCartItem}
+                    lang={this.props.lang}
+                    getStr={this.props.getStr}
+                    products={this.props.products}
+                />
 
                 <TwoColLayout
                     reverseMode
                     marginTop
-                    imgLink={ExportImage}
-                    text={''}
-                    title={'Wine Export'}
-                    listArr={this.exportListArr}
+                    imgLink={ imagePathGenerator(wineExportSec['image']) }
+                    text={wineExportSec[`text_${this.props.lang}`]}
+                    title={wineExportSec[`title_${this.props.lang}`]}
+                    listArr={wineExportSec['list']}
                 />
 
                 <TwoColLayout
-                    imgLink={ArticleImage}
-                    text={''}
-                    title={'Articles'}
-                    listArr={this.articlesListArr}
+                    imgLink={ imagePathGenerator(articlesSec['image']) }
+                    text={articlesSec[`text_${this.props.lang}`]}
+                    title={articlesSec[`title_${this.props.lang}`]}
+                    listArr={articlesSec['list']}
                 />
 
             </div>
         )
     }
 
-    exportListArr = [
-        {
-            id: 1,
-            name: 'USA',
-            link: '#',
-        },
-        {
-            id: 2,
-            name: 'Germany',
-            link: '#',
-        },
-        {
-            id: 3,
-            name: 'Italy',
-            link: '#',
-        },
-        {
-            id: 4,
-            name: 'USA',
-            link: '#',
-        },
-        {
-            id: 5,
-            name: 'Germany',
-            link: '#',
-        },
-        {
-            id: 6,
-            name: 'Italy',
-            link: '#',
-        },
-        {
-            id: 7,
-            name: 'Italy',
-            link: '#',
-        },
-    ];
-
-    articlesListArr = [
-        {
-            id: 1,
-            name: 'Vinitaly',
-            link: '#',
-        },
-        {
-            id: 2,
-            name: 'Vogue',
-            link: '#',
-        },
-        {
-            id: 3,
-            name: 'NY Times',
-            link: '#',
-        },
-        {
-            id: 4,
-            name: 'Forbes',
-            link: '#',
-        },
-        {
-            id: 5,
-            name: 'LA Times',
-            link: '#',
-        },
-        {
-            id: 6,
-            name: 'TheGuardian',
-            link: '#',
-        },
-    ]
 }
 
 const mapStateToProps = state => ({
     products: state.homePage.products,
-    lang: state.app.lang,
+    sections: state.homePage.sections,
+    slides: state.homePage.slides,
 });
 
 const mapDispatchToProps = dispatch => ({
     getProducts: () => dispatch(getProducts()),
+    getAllSections: () => dispatch(getAllSections()),
+    getAllSlides: () => dispatch(getAllSlides()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withLang(Home));
+export default compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    withLang,
+    withStrs,
+)(Home);

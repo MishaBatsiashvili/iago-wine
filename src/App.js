@@ -17,11 +17,16 @@ import customAxios from "./api/customAxios";
 
 import {addCartItem, changeAmnt, getCart, removeCartItem} from "./store/reducers/cartReducer";
 import Checkout from "./components/Checkout/Checkout";
+import DynamicPage from "./components/DynamicPage/DynamicPage";
+import {getDynamicPages} from "./store/reducers/dynamicPageReducer";
+import {getStrings} from "./store/reducers/appReducer";
 
 class App extends React.Component {
 
    componentDidMount() {
       this.props.getCart();
+      this.props.getDynamicPages();
+      this.props.getStrings();
    }
 
    componentDidUpdate(prevProps, prevState, snapshot) {
@@ -51,7 +56,7 @@ class App extends React.Component {
                changeAmnt={this.props.changeAmnt}
                cartData={this.props.cartData}
                removeCartItem={this.props.removeCartItem}
-               lang={this.props.lang}
+               pageNames={this.props.pageNames}
             />
 
             <div className={'h-100 d-flex flex-column justify-content-between'}>
@@ -64,13 +69,13 @@ class App extends React.Component {
 
                      <Route exact path={'/checkout'} component={Checkout}/>
 
-                     <Route exact path={'/about'} component={About} />
+                     <Route exact path={'/page/:pageName'} component={DynamicPage} />
 
                   </Switch>
                </div>
 
                <div>
-                  <Footer/>
+                  <Footer />
                </div>
             </div>
          </>
@@ -81,6 +86,8 @@ class App extends React.Component {
 const mapStateToProps = state => ({
    lang: state.app.lang,
    cartData: state.cart.cartData,
+   pageNames: state.dynamicPage.pageNames,
+   strings: state.app.strings,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -88,6 +95,8 @@ const mapDispatchToProps = dispatch => ({
    addCartItem: (itemId) => dispatch(addCartItem(itemId)),
    changeAmnt: (id, newAmnt, cartId) => dispatch(changeAmnt(id, newAmnt, cartId)),
    removeCartItem: (id, cartId) => dispatch(removeCartItem(id, cartId)),
+   getDynamicPages: () => dispatch(getDynamicPages()),
+   getStrings: () => dispatch(getStrings()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

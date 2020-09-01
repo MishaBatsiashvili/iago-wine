@@ -5,14 +5,18 @@ import {connect} from "react-redux";
 const withLang = (Comp) => {
    class Lang extends Component{
       componentDidMount() {
-         const searchParams = new URLSearchParams(this.props.location.search);
-         this.setLang(searchParams);
+         if(this.props.location){
+            const searchParams = new URLSearchParams(this.props.location.search);
+            this.setLang(searchParams);
+         }
       }
 
       componentDidUpdate(prevProps, prevState, snapshot) {
-         const searchParams = new URLSearchParams(this.props.location.search);
-         if(this.props.lang !== searchParams.get('lang')){
-            this.setLang(searchParams);
+         if(this.props.location) {
+            const searchParams = new URLSearchParams(this.props.location.search);
+            if (this.props.lang !== searchParams.get('lang')) {
+               this.setLang(searchParams);
+            }
          }
       }
 

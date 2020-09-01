@@ -1,11 +1,14 @@
 //action constants
+import {getAllStrings} from "../../api/api";
+
 const SET_ENG = 'SET_ENG';
 const SET_GE = 'SET_GE';
+const SET_STRINGS = 'SET_STRINGS';
 
 //initial state
 const initState = {
    lang: 'en', // 'en' or 'ge'
-   strs: {},
+   strings: {},
 }
 
 //reducer
@@ -15,6 +18,11 @@ const appReducer = (state = initState, action) => {
          return {...state, lang: 'en'}
       case SET_GE:
          return {...state, lang: 'ge'}
+      case SET_STRINGS:
+         return {
+            ...state,
+            strings: action.strings,
+         }
       default:
          return state;
    }
@@ -29,9 +37,12 @@ export const setLangEn = (userId) => ({type: SET_ENG});
 
 
 //thunk creators
-// export const requestUsers = (currentPage, pageSize) => {
-//     return dispatch => {
-//
-//     }
-// }
+export const getStrings = (currentPage, pageSize) => {
+    return dispatch => {
+       getAllStrings()
+           .then(res => {
+              dispatch({ type: SET_STRINGS, strings: res.strings });
+           })
+    }
+}
 

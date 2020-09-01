@@ -6,7 +6,7 @@
 .formTitle{
     color: #2e3034;
     padding-bottom: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     border-bottom: 1px solid #F3F4F4;
 
     display: flex;
@@ -17,4 +17,11 @@
     color: #F9B72E;
     margin-right: 10px;
     font-size: 20px;
+}
+
+.serverError{
+    color: #ca4040;
+    margin-bottom: 20px;
+    font-size: 16px;
+    font-weight: bold;
 }
