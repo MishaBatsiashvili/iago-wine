@@ -37,7 +37,7 @@ const CheckoutForm = (props) => {
 
     return (
         <div className={s.wrp}>
-            <h4 className={s.formTitle}><i className={`fas fa-shopping-cart ${s.formTitleIcon}`}></i>Checkout Form</h4>
+            <h4 className={s.formTitle}><i className={`fas fa-shopping-cart ${s.formTitleIcon}`}></i>{props.getStr('checkout_form_title')}</h4>
             <form onSubmit={props.handleSubmit} className={'row align-items-end'}>
 
                 <div className={`col-12 ${s.serverError}`}>

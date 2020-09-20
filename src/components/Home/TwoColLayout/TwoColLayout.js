@@ -28,7 +28,13 @@ const TwoColLayout = props => {
                             : null
                         }
 
-                        {props.listArr ? <List listArr={props.listArr} /> : null}
+                        {props.listArr
+                            ? <List
+                                lang={props.lang}
+                                listArr={props.listArr}
+                            />
+                            : null
+                        }
 
                     </div>
                 </Col>

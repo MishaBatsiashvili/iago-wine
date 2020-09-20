@@ -1,3 +1,25 @@
+@font-face {
+  font-family: 'englishBold';
+  src: url("assets/fonts/Roboto-Bold.ttf");
+}
+
+@font-face {
+  font-family: 'englishReg';
+  src: url("assets/fonts/Roboto-Regular.ttf");
+}
+
+@font-face {
+  font-family: 'georgianBold';
+  src: url("assets/fonts/bpg_nino_mtavruli_bold.ttf");
+}
+
+@font-face {
+  font-family: 'georgianReg';
+  src: url("assets/fonts/bpg_arial.ttf");
+}
+
+
+
 html{
   font-size: 14px;
 }

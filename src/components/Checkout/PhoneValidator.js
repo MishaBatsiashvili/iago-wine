@@ -25,8 +25,8 @@ class PhoneValidator extends Component {
                     e.preventDefault();
                     this.props.onSubmitHandler(this.state.verificationCode);
                 }}>
-                    <h3 className={`mb-2 ${s.title}`}><label htmlFor="">Verification Code</label></h3>
-                    <p className={`mb-3 d-block ${s.par}`}>You should receive verification code as a message</p>
+                    <h3 className={`mb-2 ${s.title}`}><label htmlFor="">{this.props.getStr('verif_title')}</label></h3>
+                    <p className={`mb-3 d-block ${s.par}`}>{this.props.getStr('verif_code_text')}</p>
                     <input
                         type="text"
                         className={'form-control'}
@@ -35,7 +35,7 @@ class PhoneValidator extends Component {
                     <div className={'mt-3'}>
                         <BaseBtn
                             btnType={'Yellow'}
-                            text={'Submit'}
+                            text={this.props.getStr('submit')}
                             size={'md'}
                         />
                     </div>

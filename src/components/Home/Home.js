@@ -14,10 +14,15 @@ import {connect} from "react-redux";
 import {imagePathGenerator} from "../../api/api";
 import {compose} from "redux";
 import withStrs from "../../hoc/withStrs";
+import Loader from "../common/Loader/Loader";
 ///.
 
 
 class Home extends Component {
+
+    state = {
+        showLoader: true,
+    }
 
     componentDidMount() {
         this.props.getProducts();
@@ -26,13 +31,21 @@ class Home extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        console.log(this.props);
+        if(this.state.showLoader) {
+            if (this.props.sections && this.props.slides) {
+                setTimeout(() => {
+                    this.setState({
+                        showLoader: false,
+                    });
+                }, 500);
+            }
+        }
     }
 
     render(){
 
-        if(!this.props.sections || !this.props.slides){
-            return null;
+        if(this.state.showLoader){
+            return <Loader />;
         }
 
         const aboutSec = this.props.sections['about'];
@@ -53,8 +66,9 @@ class Home extends Component {
                     imgLink={ imagePathGenerator(aboutSec['image']) }
                     text={aboutSec[`text_${this.props.lang}`]}
                     title={aboutSec[`title_${this.props.lang}`]}
-                    btnText={'See More'}
-                    btnLink={'/page/about'}
+                    btnText={this.props.getStr('see_more')}
+                    btnLink={this.props.linkWithLang('/page/about')}
+                    lang={this.props.lang}
                 />
 
                 <HomeProducts
@@ -71,6 +85,7 @@ class Home extends Component {
                     text={wineExportSec[`text_${this.props.lang}`]}
                     title={wineExportSec[`title_${this.props.lang}`]}
                     listArr={wineExportSec['list']}
+                    lang={this.props.lang}
                 />
 
                 <TwoColLayout
@@ -78,6 +93,7 @@ class Home extends Component {
                     text={articlesSec[`text_${this.props.lang}`]}
                     title={articlesSec[`title_${this.props.lang}`]}
                     listArr={articlesSec['list']}
+                    lang={this.props.lang}
                 />
 
             </div>
@@ -100,6 +116,5 @@ const mapDispatchToProps = dispatch => ({
 
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
-    withLang,
     withStrs,
 )(Home);

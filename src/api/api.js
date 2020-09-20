@@ -2,8 +2,8 @@ import customAxios from "./customAxios";
 
 window.axios = customAxios;
 
-export const imagePathGenerator = (imageName) => {
-    return process.env.REACT_APP_IMAGE_PREPATH + imageName;
+export const imagePathGenerator = (imageName, folderName) => {
+    return process.env.REACT_APP_IMAGE_PREPATH + folderName + '/' + imageName;
 }
 
 export const getProducts = () => {
@@ -89,6 +89,12 @@ export const getDynamicPageNames = () => {
 
 export const  getAllStrings = () => {
     return customAxios.get('?action=get_all_strings').then(res => {
+        return res.data;
+    });
+}
+
+export const fetchGeneralInfo = () => {
+    return customAxios.get('?action=get_general_info').then(res => {
         return res.data;
     });
 }

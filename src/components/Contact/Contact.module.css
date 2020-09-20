@@ -1,0 +1,62 @@
+.wrp{
+    padding-top: 60px;
+    padding-bottom: 100px;
+}
+
+.title{
+    margin-bottom: 30px;
+}
+
+.title, .par{
+    color: #383c40;
+}
+
+.par{
+    font-size: 16px;
+}
+
+.mapWrp{
+    width: 100%;
+    height: 400px;
+}
+
+.marker{
+    width: 50px;
+}
+
+.contactData{
+    padding: 25px 0;
+    border-top: 1px solid #383c40;
+    border-bottom: 1px solid #383c40;
+    list-style-type: none;
+    color: #383c40;
+}
+
+.contactItem:first-child{
+    margin-top: 0;
+}
+
+.contactItem{
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.iconWrp{
+    position: relative;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+
+    background: #F9B72E;
+
+    color: white;
+
+    margin-right: 10px;
+}
+
+.iconWrp i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

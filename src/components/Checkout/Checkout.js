@@ -21,6 +21,7 @@ import CheckoutSuccess from "./CheckoutSuccess";
 import {compose} from "redux";
 import withLang from "../../hoc/withLang";
 import withStrs from "../../hoc/withStrs";
+import Loader from "../common/Loader/Loader";
 
 class Checkout extends Component {
 
@@ -38,6 +39,8 @@ class Checkout extends Component {
       invoiceKey: null,
 
       formData: {},
+
+      showLoader: true,
    }
 
 
@@ -103,7 +106,7 @@ class Checkout extends Component {
       this.setState({
          serverError: '',
       });
-
+      debugger;
       this.props.checkout(this.props.checkoutFormData, verifCode)
           .then(res => {
              this.setShowPhoneValidator(false);
@@ -139,15 +142,6 @@ class Checkout extends Component {
    }
 
 
-
-
-
-
-
-
-
-
-
    componentDidMount() {
       Promise.all([getDeliveryMethods(), getPaymentMethods()])
          .then(res => {
@@ -165,27 +159,41 @@ class Checkout extends Component {
    }
 
    componentDidUpdate(prevProps, prevState, snapshot) {
-      if(prevProps.checkoutFormData !== this.props.checkoutFormData){
-         console.log(this.props.checkoutFormData);
+      if(this.state.showLoader){
+         if(this.state.deliveryMethods.length > 0 && this.state.paymentMethods.length > 0){
+            setTimeout(() => {
+               this.setState({
+                  showLoader: false,
+               })
+            }, 300);
+         }
       }
    }
 
    render() {
+
+      if(this.state.showLoader){
+         return <Loader />
+      }
+
       return (
          <div className={s.wrp}>
-            <TitleBanner imageURL={bannerImg} text={'Checkout'}/>
+            <TitleBanner imageURL={bannerImg} text={this.props.getStr('checkout')}/>
 
             <CheckoutSuccess
                 showCheckoutSuccess={this.state.showCheckoutSuccess}
                 onClosePopup={() => this.setShowSuccessPopup(false)}
                 invoiceId={this.state.invoiceId}
                 invoiceKey={this.state.invoiceKey}
+                email={this.props.checkoutFormData ? this.props.checkoutFormData.email : ''}
+                getStr={this.props.getStr}
             />
 
             <PhoneValidator
                 onSubmitHandler={this.onSubmitHandler}
                 onClosePopup={() => this.setShowPhoneValidator(false)}
                 showPhoneValidator={this.state.showPhoneValidator}
+                getStr={this.props.getStr}
             />
 
             <Container>
@@ -207,7 +215,7 @@ class Checkout extends Component {
                            lastName: 'bats',
                            address: '123',
                            phone: '551384184',
-                           email: 'n@m.com',
+                           email: 'mishabatsiashvili@yahoo.com',
                            comment: '',
                            deliveryMethod: 1,
                            paymentMethod: 2,

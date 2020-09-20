@@ -24,7 +24,7 @@ class CheckoutSuccess extends Component {
                     <a href={link} target="_blank">
                         <BaseBtn
                             btnType={'Yellow'}
-                            text={'See you order'}
+                            text={this.props.getStr('see_order')}
                             size={'md'}
                         />
                     </a>
@@ -42,9 +42,9 @@ class CheckoutSuccess extends Component {
                 showPopup={this.props.showCheckoutSuccess}
                 onClosePopup={this.props.onClosePopup}
             >
-                <h3 className={`mb-2 ${s.title}`}><label htmlFor="">Checkout Successful!</label></h3>
-                <p className={`mb-3 d-block ${s.par}`}>Order details have been sent to your email: <span
-                    className={'font-weight-bold'}>example@mail.com</span></p>
+                <h3 className={`mb-2 ${s.title}`}><label htmlFor="">{this.props.getStr('checkout_success')}</label></h3>
+                <p className={`mb-3 d-block ${s.par}`}>{this.props.getStr('order_details_text')}: <span
+                    className={'font-weight-bold'}>{this.props.email}</span></p>
                 {this.renderLinkBtn()}
             </ModalWrp>
         );

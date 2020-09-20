@@ -7,7 +7,7 @@ const OrderDetails = (props) => {
 
    const renderCartItems = () => {
       if(!props.cartData || props.cartData.products.length === 0){
-         return <div className={'text-center'}>Cart Empty</div>
+         return <div className={'text-center'}>{props.getStr('cart_empty')}</div>
       }
 
       return (

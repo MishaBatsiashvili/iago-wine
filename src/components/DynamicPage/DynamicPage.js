@@ -5,8 +5,15 @@ import {clearSinglePageData, getDynamicPageData} from "../../store/reducers/dyna
 import TitleBanner from "../common/TitleBanner/TitleBanner";
 import {Col, Container, Row} from "react-bootstrap";
 import {imagePathGenerator} from "../../api/api";
+import withStrs from "../../hoc/withStrs";
+import {compose} from "redux";
+import Loader from "../common/Loader/Loader";
 
 class DynamicPage extends Component {
+
+   state={
+      showLoader: true,
+   }
 
    componentDidMount() {
       // get page pathname from uriParam
@@ -22,6 +29,15 @@ class DynamicPage extends Component {
 
    componentDidUpdate(prevProps, prevState, snapshot) {
       console.log(this.props.singlePageData);
+      if(this.state.showLoader){
+         if(this.props.singlePageData){
+            setTimeout(() => {
+               this.setState({
+                  showLoader: false,
+               })
+            }, 300);
+         }
+      }
    }
 
    componentWillUnmount() {
@@ -31,8 +47,8 @@ class DynamicPage extends Component {
 
    render() {
 
-      if(!this.props.singlePageData){
-         return <div>Loading...</div>;
+      if(this.state.showLoader){
+         return <Loader />
       }
 
       console.log(this.props.singlePageData);
@@ -42,14 +58,14 @@ class DynamicPage extends Component {
                imageURL={imagePathGenerator(this.props.singlePageData.image)}
                className={s.banner}
             />
-            <Container>
+            <Container className={'mt-4'}>
                <Row className={'justify-content-center'}>
                   <Col md={'10'}>
                      <div className={s.contentWrp}>
-                        <h2 className={'text-center'}>{this.props.singlePageData.title_en}</h2>
+                        <h2 className={'text-center'}>{this.props.singlePageData[`title_${this.props.lang}`]}</h2>
 
                         <div className={s.textWrp} dangerouslySetInnerHTML={{
-                           __html: this.props.singlePageData.text_en,
+                           __html: this.props.singlePageData[`text_${this.props.lang}`],
                         }} />
 
                      </div>
@@ -71,4 +87,7 @@ const mapDispatchToProps = dispatch => ({
    clearSinglePageData: () => dispatch(clearSinglePageData())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(DynamicPage);
+export default compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    withStrs
+)(DynamicPage);

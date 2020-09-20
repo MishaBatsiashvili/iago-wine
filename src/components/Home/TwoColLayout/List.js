@@ -17,7 +17,7 @@ const List = props => {
 
                         return (
                             <li key={`${item.id}`} className={s.item}>
-                                <a href={item.link}>{item.title_en}</a>
+                                <a href={item.link}>{item[`title_${props.lang}`]}</a>
                             </li>
                         )
 

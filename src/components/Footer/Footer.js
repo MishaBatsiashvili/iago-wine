@@ -7,7 +7,6 @@ import withLang from "../../hoc/withLang";
 import withStrs from "../../hoc/withStrs";
 
 const Footer = props => {
-
     return (
         <div className={s.wrp}>
             <Container>
@@ -18,32 +17,40 @@ const Footer = props => {
 
                     <Col xs={12} sm={6} lg={4} className={'pl-lg-5'}>
                         <div className={s.textItemWrp}>
+
                             <h4>{props.getStr('phone', props.lang)}</h4>
-                            <p>+123456789</p>
+
+                            <p>{props.general.phone[`text_${props.lang}`]}</p>
+
                         </div>
 
                         <div className={s.textItemWrp}>
+
                             <h4>{props.getStr('address', props.lang)}</h4>
-                            <p>Address placeholder #1</p>
+
+                            <p>{props.general.address[`text_${props.lang}`]}</p>
+
                         </div>
                     </Col>
 
                     <Col sm={6} md={4}>
                         <div className={s.textItemWrp}>
                             <h4>{props.getStr('email', props.lang)}</h4>
-                            <p>example@example.com</p>
+
+                            <p>{props.general.email[`text_${props.lang}`]}</p>
+
                         </div>
 
                         <div className={s.textItemWrp}>
                             <h4>{props.getStr('social', props.lang)}</h4>
                             <div className={'d-flex mt-3'}>
-                                <div className={s.iconWrp}>
+                                <a href={props.general.facebook[`text_${props.lang}`]} className={s.iconWrp}>
                                     <i className="fab fa-facebook-f"></i>
-                                </div>
+                                </a>
 
-                                <div className={s.iconWrp}>
+                                <a href={props.general.instagram[`text_${props.lang}`]} className={s.iconWrp}>
                                     <i className="fab fa-instagram"></i>
-                                </div>
+                                </a>
                             </div>
                         </div>
                     </Col>
@@ -53,4 +60,4 @@ const Footer = props => {
     )
 }
 
-export default withStrs(withLang(Footer));
+export default withStrs(Footer);

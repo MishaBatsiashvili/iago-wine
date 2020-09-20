@@ -11,7 +11,7 @@ import marinaImg from '../../../assets/images/bottles/marina.png'
 
 const HomeProducts = props => {
     return (
-        <Container className={s.wrp}>
+        <Container id="shop" className={s.wrp}>
             <div className={'text-center'}>
                 <span className={s.secondaryText}>{props.getStr('our_store', props.lang)}</span>
                 <h1 className={s.mainText}>{props.getStr('purchase_drink', props.lang)}</h1>
@@ -23,7 +23,8 @@ const HomeProducts = props => {
                         addCartItem={props.addCartItem}
                         lang={props.lang}
                         getStr={props.getStr}
-                        productsArr={props.products} />
+                        productsArr={props.products}
+                    />
                 </Col>
             </Row>
 

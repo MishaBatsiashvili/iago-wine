@@ -5,7 +5,7 @@ import {Col, Container, Row} from "react-bootstrap";
 const CartSummary = props => {
 
     if(!props.cartData.products || props.cartData.products.length === 0){
-        return <div className={s.cartEmptyText}>Your cart is empty</div>
+        return <div className={s.cartEmptyText}>{props.getStr('cart_empty')}</div>
     }
 
     const calcCartTotalPrice = () => {

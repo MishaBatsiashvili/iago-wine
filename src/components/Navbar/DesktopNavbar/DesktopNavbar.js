@@ -1,4 +1,4 @@
-import React, {Component, createRef} from "react";
+import React, {Component, createRef, PureComponent} from "react";
 import gsap from 'gsap';
 import {
     Container,
@@ -10,29 +10,40 @@ import s from './DesktopNavbar.module.css';
 import BaseBtn from "../../common/NormalBtns/BaseBtn";
 
 import {Link} from 'react-router-dom';
+import {HashLink} from "react-router-hash-link";
+import {componentWillUnmount} from "react-style-tag/es/Style";
 
-class DesktopNavbar extends Component {
+class DesktopNavbar extends PureComponent {
 
     fixedCartRef = createRef();
     desktopMenuWrpRef = createRef();
 
-    componentDidMount() {
-        const toggleFixedCart = (display) => {
-            gsap.set(this.fixedCartRef.current, {
-                display: display,
-            });
+    scrollHandler = (e) => {
+
+        // debugger;
+        const scrollPos = window.scrollY;
+        const desktopMenuPost = this.desktopMenuWrpRef.current.scrollTop + 100;
+
+        if(scrollPos > desktopMenuPost){
+            this.toggleFixedCart('block');
+        } else if(scrollPos <= desktopMenuPost){
+            this.toggleFixedCart('none');
         }
-        window.addEventListener('scroll', (e) => {
-            const scrollPos = window.scrollY;
-            const desktopMenuPost = this.desktopMenuWrpRef.current.scrollTop + 100;
 
-            if(scrollPos > desktopMenuPost){
-                toggleFixedCart('block');
-            } else if(scrollPos <= desktopMenuPost){
-                toggleFixedCart('none');
-            }
+    }
 
-        })
+    toggleFixedCart = (display) => {
+        gsap.set(this.fixedCartRef.current, {
+            display: display,
+        });
+    }
+
+    componentDidMount() {
+        window.addEventListener('scroll', this.scrollHandler);
+    }
+
+    componentWillUnmount(){
+        window.removeEventListener('scroll', this.scrollHandler);
     }
 
     render(){
@@ -45,27 +56,38 @@ class DesktopNavbar extends Component {
                                 <Row>
 
                                     <Col md={3}>
-                                        <Link to={'/'} className={s.LogoWrp}>
+                                        <Link to={this.props.linkWithLang('/')} className={s.LogoWrp}>
                                             <img src={LogoUrl} className={s.Logo} alt="logo"/>
                                         </Link>
                                     </Col>
 
-                                    <Col md={6}>
+                                    <Col md={7}>
                                         <div className={'d-flex align-items-center'}>
                                             <nav className={s.navItemsOuterWrp}>
                                                 <div className={s.navItemsInnerWrp}>
-                                                    <Link to={'/'} className={s.navItem}>Home</Link>
+
+                                                    <Link to={this.props.linkWithLang('/')} className={s.navItem}>{this.props.getStr('nav_home')}</Link>
+
                                                     {this.props.pageNames.map(page => {
-                                                        return <Link key={page.name} to={`/page/${page.name}`} className={s.navItem}>{page.title_en}</Link>
+                                                        return <Link key={page.name} to={this.props.linkWithLang(`/page/${page.name}`)} className={s.navItem}>{page[`title_${this.props.lang}`]}</Link>
                                                     })}
-                                                    <Link to={'/contact'} className={s.navItem}>Contact</Link>
-                                                    <BaseBtn btnType={'Yellow'} size={'md'} text={'Online Shop'} />
+
+                                                    <Link to={this.props.linkWithLang('/contact')} className={s.navItem}>{this.props.getStr('nav_contact')}</Link>
+
+                                                    <HashLink smooth to={this.props.linkWithLang('/#shop')}>
+                                                        <BaseBtn
+                                                            btnType={'Yellow'}
+                                                            size={'md'}
+                                                            text={this.props.getStr('nav_shop')}
+                                                        />
+                                                    </HashLink>
+
                                                 </div>
                                             </nav>
                                         </div>
                                     </Col>
 
-                                    <Col md={3}>
+                                    <Col md={2}>
                                         <div className={'d-flex align-items-center justify-content-end h-100'}>
                                             <div className={`d-flex justify-content-end h-100 ${s.cartWrp}`}>
                                                 <div className={`d-flex align-items-center ${s.cartIconWrp}`} onClick={this.props.onCartBtnClicked} >

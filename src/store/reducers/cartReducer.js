@@ -69,6 +69,7 @@ const fetchCart = (dispatch) => {
       dispatch({type: GET_CART, cartData: res.data});
    });
 }
+
 export const getCart = () => {
     return dispatch => {
        fetchCart(dispatch);
@@ -122,7 +123,10 @@ export const checkout = (formData, verifCode) => {
       formData.verif = verifCode;
 
       // submitting checkout form
-      return sendFormToCheckout(formData);
+      return sendFormToCheckout(formData).then(res => {
+         fetchCart(dispatch);
+         return res;
+      });
    }
 }
 

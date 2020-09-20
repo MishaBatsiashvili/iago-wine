@@ -68,7 +68,7 @@ class Cart extends Component {
 
                     {this.props.cartData && this.props.cartData.products.length > 0 ?
                         <DarkYellowFilledBtn
-                           linkPath={'/checkout'}
+                           linkPath={this.props.linkWithLang('/checkout')}
                            btnClasses={s.checkoutBtn}
                            text={this.props.getStr('checkout', this.props.lang)}
                            callback={this.props.onCartCloseBtnClicked}

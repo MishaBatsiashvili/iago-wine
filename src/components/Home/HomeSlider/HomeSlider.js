@@ -57,7 +57,7 @@ class HomeSlider extends React.Component {
                 return (
                     <div className={`swiper-slide ${s.swiperSlide}`}
                          key={slide.id}
-                         style={{backgroundImage: `url(${imagePathGenerator(slide.image)})`}} />
+                         style={{backgroundImage: `url(${imagePathGenerator(slide.image, 'slides')})`}} />
                 )
             })
         }

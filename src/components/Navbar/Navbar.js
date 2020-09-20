@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component, PureComponent} from "react";
 import DesktopNavbar from "./DesktopNavbar/DesktopNavbar";
 import MobileNavbar from "./MobileNavbar/MobileNavbar";
 import Cart from "./Cart/Cart";
@@ -9,7 +9,7 @@ import {compose} from "redux";
 import withLang from "../../hoc/withLang";
 import withStrs from "../../hoc/withStrs";
 
-class Navbar extends Component {
+class Navbar extends PureComponent {
 
     state = {
         showSidebar: false,
@@ -65,6 +65,7 @@ class Navbar extends Component {
         const langImg = this.props.lang === 'ge' ? usaFlag : geoFlag;
         ///.
 
+
         return (
             <>
                 <DesktopNavbar
@@ -72,9 +73,13 @@ class Navbar extends Component {
                     totalPrice={this.calcCartTotalPrice()}
                     itemsAmnt={this.calcCartItemsAmnt()}
                     cartData={this.props.cartData}
+
+                    getStr={this.props.getStr}
                     lang={this.props.lang}
                     langUrl={langUrl}
                     langImg={langImg}
+                    linkWithLang={this.props.linkWithLang}
+
                     onCartBtnClicked={this.onCartBtnClicked}/>
 
                 <MobileNavbar
@@ -82,9 +87,13 @@ class Navbar extends Component {
                     totalPrice={this.calcCartTotalPrice()}
                     itemsAmnt={this.calcCartItemsAmnt()}
                     cartData={this.props.cartData}
+
+                    getStr={this.props.getStr}
                     lang={this.props.lang}
                     langUrl={langUrl}
                     langImg={langImg}
+                    linkWithLang={this.props.linkWithLang}
+
                     showSidebar={this.state.showSidebar}
                     onSidebarCloseBtnClicked={this.onSidebarCloseBtnClicked}
                     onSidebarBtnClicked={this.onSidebarBtnClicked}
@@ -93,14 +102,19 @@ class Navbar extends Component {
                 <Cart
                     removeCartItem={this.props.removeCartItem}
                     changeAmnt={this.props.changeAmnt}
+
                     lang={this.props.lang}
                     getStr={this.props.getStr}
+                    linkWithLang={this.props.linkWithLang}
+
                     cartData={this.props.cartData}
                     showCart={this.state.showCart}
-                    onCartCloseBtnClicked={this.onCartCloseBtnClicked}/>
+                    onCartCloseBtnClicked={this.onCartCloseBtnClicked}
+
+                />
             </>
         )
     }
 }
 
-export default compose(withRouter, withLang, withStrs)(Navbar);
+export default compose(withRouter, withStrs, withLang)(Navbar);

@@ -12,9 +12,24 @@ const withStrs = (Comp) => {
             return '';
         }
 
+        linkWithLang = (link) => {
+            if (this.props.lang === 'ge') {
+                link = link.split('#');
+                const partOne = link[0];
+                const partTwo = link[1] ?? '';
+                return partOne + '?lang=ge#' + partTwo;
+            } else {
+                return link;
+            }
+        }
+
         render(){
             return (
-                <Comp {...this.props} getStr={this.getStr} />
+                <Comp
+                    {...this.props}
+                    getStr={this.getStr}
+                    linkWithLang={this.linkWithLang}
+                />
             )
         }
     }

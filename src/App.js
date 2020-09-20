@@ -19,18 +19,38 @@ import {addCartItem, changeAmnt, getCart, removeCartItem} from "./store/reducers
 import Checkout from "./components/Checkout/Checkout";
 import DynamicPage from "./components/DynamicPage/DynamicPage";
 import {getDynamicPages} from "./store/reducers/dynamicPageReducer";
-import {getStrings} from "./store/reducers/appReducer";
+import {getGeneralInfo, getStrings} from "./store/reducers/appReducer";
+import Contact from "./components/Contact/Contact";
+import {Style} from "react-style-tag";
+import Loader from "./components/common/Loader/Loader";
 
 class App extends React.Component {
+
+   state = {
+      showLoader: true,
+   }
 
    componentDidMount() {
       this.props.getCart();
       this.props.getDynamicPages();
       this.props.getStrings();
+      this.props.getGeneralInfo();
    }
 
    componentDidUpdate(prevProps, prevState, snapshot) {
-      console.log(this.props)
+      if(this.state.showLoader){
+         if(this.props.cartData && Object.keys(this.props.cartData).length > 0 && Object.keys(this.props.general).length > 0){
+            setTimeout(() => {
+               this.setState({showLoader: false});
+            }, 600);
+         }
+      } else {
+         if(this.props.lang !== prevProps.lang){
+            // debugger;
+            this.setState({showLoader: true});
+         }
+      }
+
    }
 
    addCartItem = (id) => {
@@ -46,12 +66,45 @@ class App extends React.Component {
 
    render() {
 
-      if(!this.props.cartData || Object.keys(this.props.cartData).length === 0){
-         return <div>Loading...</div>;
+      if(this.state.showLoader){
+         return <Loader />;
+      }
+
+      const fontStylesJSX = () => {
+         if(this.props.lang === 'ge'){
+            return (
+                <Style>
+                   {`
+                      body{
+                        font-family: 'georgianReg'
+                      }
+                      h1,h2,h3,h4,h5,h6{
+                        font-family: 'georgianBold'
+                      }
+                  `}
+                </Style>
+            )
+         } else if(this.props.lang === 'en') {
+            return (
+                <Style>
+                   {`
+                      body{
+                        font-family: 'englishReg'
+                      }
+                      h1,h2,h3,h4,h5,h6{
+                        font-family: 'englishBold'
+                      }
+                  `}
+                </Style>
+            )
+         }
       }
 
       return (
          <>
+
+            {fontStylesJSX()}
+
             <Navbar
                changeAmnt={this.props.changeAmnt}
                cartData={this.props.cartData}
@@ -71,11 +124,15 @@ class App extends React.Component {
 
                      <Route exact path={'/page/:pageName'} component={DynamicPage} />
 
+                     <Route exact path={'/contact'} component={Contact} />
+
                   </Switch>
                </div>
 
                <div>
-                  <Footer />
+                  <Footer
+                      general={this.props.general}
+                  />
                </div>
             </div>
          </>
@@ -88,6 +145,7 @@ const mapStateToProps = state => ({
    cartData: state.cart.cartData,
    pageNames: state.dynamicPage.pageNames,
    strings: state.app.strings,
+   general: state.app.general,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -97,6 +155,7 @@ const mapDispatchToProps = dispatch => ({
    removeCartItem: (id, cartId) => dispatch(removeCartItem(id, cartId)),
    getDynamicPages: () => dispatch(getDynamicPages()),
    getStrings: () => dispatch(getStrings()),
+   getGeneralInfo: () => dispatch(getGeneralInfo())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
