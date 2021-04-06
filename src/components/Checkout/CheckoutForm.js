@@ -71,7 +71,7 @@ const CheckoutForm = (props) => {
                     {...props}
                     label={props.getStr('delivery_method_field')}
                     name={'deliveryMethod'}
-                    options={props.deliveryMethods}
+                    options={[props.deliveryMethods[0]]}
                     onChangeHandler={(e) => {
                         const value = e.target.value;
                         const index = props.deliveryMethods.findIndex(el => el.id === parseInt(value));

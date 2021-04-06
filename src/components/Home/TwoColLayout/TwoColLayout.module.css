@@ -1,17 +1,17 @@
-.marginTop{
-    margin-top: 50px;
+.paddingTop{
+    padding-top: 50px;
 }
 
-.marginTopMobile{
-    margin-top: 40px;
+.paddingTopMobile{
+    padding-top: 40px;
 }
 
 .title{
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 .text{
-    font-size: 16px;
+    font-size: 14px;
     margin-bottom: 30px;
     color: #707070;
 }
@@ -46,12 +46,12 @@
         margin-bottom: 0;
     }
 
-    .marginTop{
-        margin-top: 100px;
+    .paddingTop{
+        padding-top: 100px;
     }
 
-    .marginTopMobile{
-        margin-top: 0;
+    .paddingTopMobile{
+        padding-top: 0;
     }
 
     .leftImgCol{
@@ -63,6 +63,6 @@
     }
 
     .textWrp{
-        padding: 40px;
+        padding: 20px 40px;
     }
 }

@@ -3,7 +3,7 @@ import gsap from 'gsap';
 import {
     Container,
     Row,
-    Col
+    Col, Dropdown
 } from 'react-bootstrap';
 import LogoUrl from '../../../assets/images/logo.png';
 import s from './DesktopNavbar.module.css';
@@ -12,11 +12,13 @@ import BaseBtn from "../../common/NormalBtns/BaseBtn";
 import {Link} from 'react-router-dom';
 import {HashLink} from "react-router-hash-link";
 import {componentWillUnmount} from "react-style-tag/es/Style";
+import {bounceAnimation} from "../../../helpers/helpers";
 
 class DesktopNavbar extends PureComponent {
 
     fixedCartRef = createRef();
     desktopMenuWrpRef = createRef();
+    cartIconRef = createRef();
 
     scrollHandler = (e) => {
 
@@ -46,7 +48,29 @@ class DesktopNavbar extends PureComponent {
         window.removeEventListener('scroll', this.scrollHandler);
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if(this.props.itemsAmnt !== prevProps.itemsAmnt){
+            bounceAnimation(this.fixedCartRef.current);
+            bounceAnimation(this.cartIconRef.current);
+        }
+    }
+
     render(){
+        const customDropdownToggle = React.forwardRef(({ children, onClick }, ref) => (
+            <div
+                className={'cursor-pointer'}
+                ref={ref}
+                onClick={(e) => {
+                    e.preventDefault();
+                    onClick(e);
+                }}
+            >
+                {children}
+
+                <span className={s.dropdownArrow}>&#x25bc;</span>
+            </div>
+        ));
+
         return (
             <div ref={this.desktopMenuWrpRef} className={s.desktopWrp}>
                 <div className={s.desktopNavbar}>
@@ -55,13 +79,13 @@ class DesktopNavbar extends PureComponent {
                             <Col lg={12}>
                                 <Row>
 
-                                    <Col md={3}>
+                                    <Col md={2}>
                                         <Link to={this.props.linkWithLang('/')} className={s.LogoWrp}>
                                             <img src={LogoUrl} className={s.Logo} alt="logo"/>
                                         </Link>
                                     </Col>
 
-                                    <Col md={7}>
+                                    <Col md={8}>
                                         <div className={'d-flex align-items-center'}>
                                             <nav className={s.navItemsOuterWrp}>
                                                 <div className={s.navItemsInnerWrp}>
@@ -71,6 +95,29 @@ class DesktopNavbar extends PureComponent {
                                                     {this.props.pageNames.map(page => {
                                                         return <Link key={page.name} to={this.props.linkWithLang(`/page/${page.name}`)} className={s.navItem}>{page[`title_${this.props.lang}`]}</Link>
                                                     })}
+
+                                                    <HashLink className={s.navItem} smooth to={this.props.linkWithLang('/#winery')}>
+                                                        {this.props.getStr('nav_winery')}
+                                                    </HashLink>
+
+
+                                                    <Dropdown className={s.navItem}>
+                                                        <Dropdown.Toggle as={customDropdownToggle} variant="success" id="dropdown-basic">
+                                                            <div className={`${s.navItem} m-0 d-inline-block`}>{this.props.getStr('nav_more')}</div>
+                                                        </Dropdown.Toggle>
+
+                                                        <Dropdown.Menu>
+
+                                                            <HashLink className={`${s.navItem} dropdown-item`} smooth to={this.props.linkWithLang('/#export')}>
+                                                                {this.props.getStr('nav_export')}
+                                                            </HashLink>
+
+                                                            <HashLink className={`${s.navItem} dropdown-item`} smooth to={this.props.linkWithLang('/#articles')}>
+                                                                {this.props.getStr('nav_articles')}
+                                                            </HashLink>
+
+                                                        </Dropdown.Menu>
+                                                    </Dropdown>
 
                                                     <Link to={this.props.linkWithLang('/contact')} className={s.navItem}>{this.props.getStr('nav_contact')}</Link>
 
@@ -89,9 +136,10 @@ class DesktopNavbar extends PureComponent {
 
                                     <Col md={2}>
                                         <div className={'d-flex align-items-center justify-content-end h-100'}>
+
                                             <div className={`d-flex justify-content-end h-100 ${s.cartWrp}`}>
                                                 <div className={`d-flex align-items-center ${s.cartIconWrp}`} onClick={this.props.onCartBtnClicked} >
-                                                    <div className={'position-relative'}>
+                                                    <div ref={this.cartIconRef} className={'position-relative'}>
                                                         <div className={`d-flex align-items-center justify-content-center ${s.cartAmount}`}>{this.props.itemsAmnt}</div>
                                                         <i className={`fas fa-shopping-cart ${s.cartIcon}`}></i>
                                                     </div>

@@ -51,6 +51,7 @@ class Home extends Component {
         const aboutSec = this.props.sections['about'];
         const wineExportSec = this.props.sections['wine_export'];
         const articlesSec = this.props.sections['articles'];
+        const winerySec = this.props.sections['winery'];
 
         return (
             <div>
@@ -61,13 +62,23 @@ class Home extends Component {
                 />
 
                 <TwoColLayout
+                    id={'about'}
                     reverseMode
-                    marginTop
-                    imgLink={ imagePathGenerator(aboutSec['image']) }
+                    paddingTop
+                    imgLink={ imagePathGenerator(aboutSec['image'], 'sections') }
                     text={aboutSec[`text_${this.props.lang}`]}
                     title={aboutSec[`title_${this.props.lang}`]}
                     btnText={this.props.getStr('see_more')}
                     btnLink={this.props.linkWithLang('/page/about')}
+                    lang={this.props.lang}
+                />
+
+                <TwoColLayout
+                    id={'winery'}
+                    paddingTop
+                    imgLink={ imagePathGenerator(winerySec['image'], 'sections') }
+                    text={winerySec[`text_${this.props.lang}`]}
+                    title={winerySec[`title_${this.props.lang}`]}
                     lang={this.props.lang}
                 />
 
@@ -79,9 +90,10 @@ class Home extends Component {
                 />
 
                 <TwoColLayout
+                    id={'export'}
                     reverseMode
-                    marginTop
-                    imgLink={ imagePathGenerator(wineExportSec['image']) }
+                    paddingTop
+                    imgLink={ imagePathGenerator(wineExportSec['image'], 'sections') }
                     text={wineExportSec[`text_${this.props.lang}`]}
                     title={wineExportSec[`title_${this.props.lang}`]}
                     listArr={wineExportSec['list']}
@@ -89,7 +101,9 @@ class Home extends Component {
                 />
 
                 <TwoColLayout
-                    imgLink={ imagePathGenerator(articlesSec['image']) }
+                    id={'articles'}
+                    paddingTop
+                    imgLink={ imagePathGenerator(articlesSec['image'], 'sections') }
                     text={articlesSec[`text_${this.props.lang}`]}
                     title={articlesSec[`title_${this.props.lang}`]}
                     listArr={articlesSec['list']}

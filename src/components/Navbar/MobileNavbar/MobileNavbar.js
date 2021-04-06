@@ -1,10 +1,21 @@
-import React, {Component} from "react";
+import React, {Component, createRef} from "react";
 import LogoUrl from '../../../assets/images/logo.png';
 import s from './MobileNavbar.module.css';
 import MobileNavbarSidebar from "./MobileNavbarSidebar";
 import {Link} from "react-router-dom";
+import gsap from "gsap/gsap-core";
+import {bounceAnimation} from "../../../helpers/helpers";
 
 class DesktopNavbar extends Component {
+
+    cartRef = createRef();
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if(this.props.itemsAmnt !== prevProps.itemsAmnt){
+            bounceAnimation(this.cartRef.current, 0.2, 1.3);
+        }
+    }
+
     render() {
         return (
             <div className={s.mobileNavbar}>
@@ -37,7 +48,7 @@ class DesktopNavbar extends Component {
                     {/*/.*/}
 
                     {/*cart*/}
-                    <div onClick={this.props.onCartBtnClicked}
+                    <div ref={this.cartRef} onClick={this.props.onCartBtnClicked}
                          className={`d-flex justify-content-end h-100 ${s.cartWrp}`}>
                         <div className={'d-flex align-items-center'}>
                             <div className={s.cartIconWrp}>

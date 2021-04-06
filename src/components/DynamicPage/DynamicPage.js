@@ -8,6 +8,7 @@ import {imagePathGenerator} from "../../api/api";
 import withStrs from "../../hoc/withStrs";
 import {compose} from "redux";
 import Loader from "../common/Loader/Loader";
+import {scrollToTop} from "../../helpers/helpers";
 
 class DynamicPage extends Component {
 
@@ -24,20 +25,38 @@ class DynamicPage extends Component {
             if(!res || Object.entries(res).length === 0){
                this.props.history.push('/page-not-found');
             }
+            scrollToTop()
          })
    }
 
    componentDidUpdate(prevProps, prevState, snapshot) {
-      console.log(this.props.singlePageData);
-      if(this.state.showLoader){
-         if(this.props.singlePageData){
-            setTimeout(() => {
-               this.setState({
-                  showLoader: false,
-               })
-            }, 300);
+
+      if(this.props.match.params.pageName !== prevProps.match.params.pageName && this.state.showLoader === false){
+         const path = this.props.match.params.pageName;
+         this.props.getSinglePageData(path)
+             .then(res => {
+                if(!res || Object.entries(res).length === 0){
+                   this.props.history.push('/page-not-found');
+                }
+
+                this.setState({
+                   showLoader: true,
+                });
+
+                scrollToTop();
+             });
+      } else {
+         if (this.state.showLoader) {
+            if (this.props.singlePageData) {
+               setTimeout(() => {
+                  this.setState({
+                     showLoader: false,
+                  })
+               }, 300);
+            }
          }
       }
+
    }
 
    componentWillUnmount() {
@@ -55,7 +74,7 @@ class DynamicPage extends Component {
       return (
          <div className={s.wrp}>
             <TitleBanner
-               imageURL={imagePathGenerator(this.props.singlePageData.image)}
+               imageURL={imagePathGenerator(this.props.singlePageData.image ,'pages')}
                className={s.banner}
             />
             <Container className={'mt-4'}>

@@ -22,6 +22,7 @@ import {compose} from "redux";
 import withLang from "../../hoc/withLang";
 import withStrs from "../../hoc/withStrs";
 import Loader from "../common/Loader/Loader";
+import moment from 'moment';
 
 class Checkout extends Component {
 
@@ -106,7 +107,7 @@ class Checkout extends Component {
       this.setState({
          serverError: '',
       });
-      debugger;
+      // debugger;
       this.props.checkout(this.props.checkoutFormData, verifCode)
           .then(res => {
              this.setShowPhoneValidator(false);
@@ -127,6 +128,9 @@ class Checkout extends Component {
    }
 
    generateSubmitFormData = (values) => {
+
+       const date = this.state.deliveryDate;
+   // debugger;
       return {
          firstName: values.firstName,
          lastName: values.lastName,
@@ -138,6 +142,9 @@ class Checkout extends Component {
          deliveryMethod: values.deliveryMethod,
          paymentMethod: values.paymentMethod,
          cartId: this.props.cartData.id,
+
+         // deliveryDate: `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`,
+         deliveryDate: date.toISOString().slice(0, 10),
       }
    }
 

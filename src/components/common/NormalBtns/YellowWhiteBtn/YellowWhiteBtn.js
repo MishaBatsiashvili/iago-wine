@@ -6,6 +6,7 @@ import {Link} from "react-router-dom";
 const YellowWhiteBtn = props => {
     return (
         <button
+            ref={props.btnRef}
             type={props.type}
             className={`${props.baseClass} ${props.sizeClass} ${s.custom}`}
             onClick={props.onBtnClicked}>

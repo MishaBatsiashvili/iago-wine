@@ -7,7 +7,7 @@ import List from "./List";
 const TwoColLayout = props => {
 
     return (
-        <Container className={props.marginTop ? s.marginTop : s.marginTopMobile}>
+        <Container id={props.id || ''} className={props.paddingTop ? s.paddingTop : s.paddingTopMobile}>
             <Row>
                 <Col lg={6} className={`${props.reverseMode ? `${s.reverse} ${s.rightImgCol}` : s.leftImgCol} ${s.marginBottom}`}>
                     <div className={s.imgWrp}>

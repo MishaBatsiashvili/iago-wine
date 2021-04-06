@@ -35,6 +35,7 @@ const BaseBtn = props => {
         // ${props.baseClass} ${props.sizeClass} ${s.custom}
         return (
             <BtnComp
+                btnRef={props.btnRef}
                 onBtnClicked={props.onBtnClicked}
                 baseClass={`${s.btn} ${props.className}`}
                 sizeClass={sizeClass}

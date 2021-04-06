@@ -5,8 +5,8 @@ import 'swiper/css/swiper.min.css';
 import "react-datepicker/dist/react-datepicker.css";
 
 import {
-  Switch,
-  Route
+   Switch,
+   Route, Redirect
 } from 'react-router-dom';
 import Home from "./components/Home/Home";
 import Navbar from "./components/Navbar/Navbar";
@@ -40,6 +40,7 @@ class App extends React.Component {
    componentDidUpdate(prevProps, prevState, snapshot) {
       if(this.state.showLoader){
          if(this.props.cartData && Object.keys(this.props.cartData).length > 0 && Object.keys(this.props.general).length > 0){
+            console.log('123');
             setTimeout(() => {
                this.setState({showLoader: false});
             }, 600);
@@ -66,7 +67,8 @@ class App extends React.Component {
 
    render() {
 
-      if(this.state.showLoader){
+      if(this.state.showLoader
+      ){
          return <Loader />;
       }
 
@@ -119,6 +121,10 @@ class App extends React.Component {
                      <Route exact path={'/'} render={(renderProps) =>
                         <Home {...renderProps} addCartItem={this.addCartItem} />
                      }/>
+
+                     <Route exact path={'/index.html'} >
+                        <Redirect to={'/'} />
+                     </Route>
 
                      <Route exact path={'/checkout'} component={Checkout}/>
 

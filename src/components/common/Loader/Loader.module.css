@@ -43,7 +43,7 @@
     width: 22px;
     height: 22px;
     border-radius: 50%;
-    background: linear-gradient(transparent 50%, #F36E3E 50%);
+    background: linear-gradient(transparent 50%, #F9B72E 50%);
 }
 .left .top:before {
     animation: rotate2 2s linear infinite;
@@ -95,7 +95,7 @@
     background: white;
     position: absolute;
     box-shadow: 0 0 1px white;
-    transform-origin: bottom;
+    transform-origin: center;
 }
 .loader li:nth-child(1) {
     left: 26px;
@@ -129,4 +129,21 @@
         opacity: 0;
         transform: scaleY(.3);
     }
+}
+
+.wrp{
+    transform: translateY(-50%);
+    width: 150px;
+    height: 150px;
+    position: relative;
+
+    border-radius: 50%;
+    border: 3px solid #ffffff;
+}
+
+.innerWrp{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -55%);
 }

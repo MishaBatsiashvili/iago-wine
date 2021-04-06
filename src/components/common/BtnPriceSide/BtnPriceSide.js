@@ -1,13 +1,23 @@
-import React from "react";
+import React, {useRef} from "react";
 import BaseBtn from "../NormalBtns/BaseBtn";
 import s from './BtnPriceSide.module.css';
+import gsap from 'gsap';
 import {Col, Row} from "react-bootstrap";
 
 const BtnPriceSide = props => {
 
+    const btnRef = useRef(null);
+    const btnClickHandlder = () => {
+        props.onBtnClicked();
+        gsap.fromTo(btnRef.current, {scaleX: 1, scaleY: 1}, {scaleX: 1.3, scaleY: 1.3, duration: .1, onComplete: () => {
+            gsap.to(btnRef.current, {scaleX: 1, scaleY: 1, duration: .1});
+        }})
+    }
+
     const renderBaseBtn = (className) => (
         <BaseBtn
-            onBtnClicked={props.onBtnClicked}
+            btnRef={btnRef}
+            onBtnClicked={btnClickHandlder}
             className={className}
             btnType={props.btnType ? props.btnType : 'YellowWhite'}
             size={'md'}

@@ -13,6 +13,7 @@ const initState = {
    cartData: {
 
    },
+   cartPending: false,
    checkoutFormData: null,
 }
 
@@ -78,7 +79,9 @@ export const getCart = () => {
 
 export const addCartItem = (itemId) => {
    return dispatch => {
-      return customAxios.post('?action=add_cart_item', {item_id: itemId})
+      return customAxios.post('?action=add_cart_item', {item_id: itemId}).then(res => {
+         fetchCart(dispatch);
+      })
    }
 }
 

@@ -79,6 +79,33 @@ class MobileNavbarSidebar extends Component {
                             )
                         })}
 
+                        <HashLink
+                            className={s.navItem}
+                            smooth
+                            to={this.props.linkWithLang('/#winery')}
+                            onClick={this.props.onSidebarCloseBtnClicked}>
+
+                            {this.props.getStr('nav_winery')}
+                        </HashLink>
+
+                        <HashLink
+                            className={s.navItem}
+                            smooth
+                            to={this.props.linkWithLang('/#export')}
+                            onClick={this.props.onSidebarCloseBtnClicked}>
+
+                            {this.props.getStr('nav_export')}
+                        </HashLink>
+
+                        <HashLink
+                            className={s.navItem}
+                            smooth
+                            to={this.props.linkWithLang('/#articles')}
+                            onClick={this.props.onSidebarCloseBtnClicked}>
+
+                            {this.props.getStr('nav_articles')}
+                        </HashLink>
+
                         <Link
                             to={this.props.linkWithLang('/contact')}
                             className={s.navItem}

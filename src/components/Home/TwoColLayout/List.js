@@ -11,13 +11,13 @@ const List = props => {
     for (let x = 0; x < colsAmnt; x++) {
 
         colItemsJSX.push(
-            <Col key={x} xs={12} sm={6} md={4}>
+            <Col key={x} xs={12} sm={6} >
                 <ul className={'pl-4'}>
                     {props.listArr.slice(x * portionSize, (x + 1) * portionSize).map(item => {
 
                         return (
                             <li key={`${item.id}`} className={s.item}>
-                                <a href={item.link}>{item[`title_${props.lang}`]}</a>
+                                <a href={item.link} target={'_blank'}>{item[`title_${props.lang}`]}</a>
                             </li>
                         )
 

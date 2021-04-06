@@ -1,6 +1,7 @@
 import React from "react";
 import Product from "./Product";
 import {Row} from "react-bootstrap";
+import {imagePathGenerator} from "../../api/api";
 
 const Products = props => {
     // id: 2,
@@ -17,7 +18,9 @@ const Products = props => {
                 desc={prod[`descr_${props.lang}`]}
                 price={prod.price}
                 addCartItem={props.addCartItem}
-                imageLink={'http://iago.ge/images/' + prod.img}
+                imageLink={imagePathGenerator(prod.img, 'products')}
+                inStock={prod.in_stock}
+
                 lang={props.lang}
                 getStr={props.getStr}
             />
