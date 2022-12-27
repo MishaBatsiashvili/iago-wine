@@ -18,6 +18,7 @@ import Contact from './components/Contact/Contact';
 import { Style } from 'react-style-tag';
 import Loader from './components/common/Loader/Loader';
 import PropTypes from 'prop-types';
+import InjectLanguageBasedFontStyles from './components/common/InjectLanguageBasedFontStyles/InjectLanguageBasedFontStyles';
 
 class App extends React.Component {
   state = {
@@ -66,39 +67,9 @@ class App extends React.Component {
       return <Loader />;
     }
 
-    const fontStylesJSX = () => {
-      if (this.props.lang === 'ge') {
-        return (
-          <Style>
-            {`
-                      body{
-                        font-family: 'georgianReg'
-                      }
-                      h1,h2,h3,h4,h5,h6{
-                        font-family: 'georgianBold'
-                      }
-                  `}
-          </Style>
-        );
-      } else if (this.props.lang === 'en') {
-        return (
-          <Style>
-            {`
-                      body{
-                        font-family: 'englishReg'
-                      }
-                      h1,h2,h3,h4,h5,h6{
-                        font-family: 'englishBold'
-                      }
-                  `}
-          </Style>
-        );
-      }
-    };
-
     return (
       <>
-        {fontStylesJSX()}
+        <InjectLanguageBasedFontStyles />
 
         <Navbar
           changeAmnt={this.props.changeAmnt}
