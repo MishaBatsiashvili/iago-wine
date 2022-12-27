@@ -75,7 +75,7 @@ class App extends React.Component {
   render() {
     return (
       <LoaderWrapper
-        shouldToggleLoader={this.isInitialComponentDataLoadedAndValid() || this.isLanguageChanged()}
+        isLoaded={this.isInitialComponentDataLoadedAndValid() || this.isLanguageChanged()}
       >
         <InjectLanguageSpecificFontStyles />
 

@@ -4,16 +4,16 @@ import { useState } from 'react';
 import Loader from './Loader';
 import PropTypes from 'prop-types';
 
-const LoaderWrapper = ({ children, shouldToggleLoader, extraMilisecondsToWait = null }) => {
+const LoaderWrapper = ({ children, isLoaded, extraMilisecondsToWait = null }) => {
   const [showLoader, setShowLoader] = useState(true);
 
   useEffect(() => {
     handleLoaderToggle();
-  }, [shouldToggleLoader]);
+  }, [isLoaded]);
 
   const handleLoaderToggle = () => {
     let timeout = null;
-    if (shouldToggleLoader) {
+    if (isLoaded) {
       if (extraMilisecondsToWait) {
         timeout = setTimeout(() => {
           setShowLoader(false);
@@ -39,6 +39,6 @@ export default LoaderWrapper;
 
 LoaderWrapper.propTypes = {
   children: PropTypes.any,
-  shouldToggleLoader: PropTypes.bool,
+  isLoaded: PropTypes.bool,
   extraMilisecondsToWait: PropTypes.number
 };
