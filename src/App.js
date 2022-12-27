@@ -41,7 +41,7 @@ class App extends React.Component {
     }
   };
 
-  languageIsChanged = () => {
+  isLanguageChanged = () => {
     if (!this.props || !this.state.prevLanguage) {
       return false;
     }
@@ -49,7 +49,7 @@ class App extends React.Component {
     return this.props.lang !== this.state.prevLanguage;
   };
 
-  initialComponentDataIsLoadedAndValid = () => {
+  isInitialComponentDataLoadedAndValid = () => {
     return (
       this.props.cartData &&
       this.props.pageNames &&
@@ -75,7 +75,7 @@ class App extends React.Component {
   render() {
     return (
       <LoaderWrapper
-        shouldToggleLoader={this.initialComponentDataIsLoadedAndValid() || this.languageIsChanged()}
+        shouldToggleLoader={this.isInitialComponentDataLoadedAndValid() || this.isLanguageChanged()}
       >
         <InjectLanguageSpecificFontStyles />
 
