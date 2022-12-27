@@ -2,55 +2,69 @@ import React from 'react';
 import './App.css';
 import 'swiper/css/swiper.min.css';
 import 'react-datepicker/dist/react-datepicker.css';
-
 import { Switch, Route, Redirect } from 'react-router-dom';
 import Home from './components/Home/Home';
 import Navbar from './components/Navbar/Navbar';
 import Footer from './components/Footer/Footer';
 import { connect } from 'react-redux';
-
 import { addCartItem, changeAmnt, getCart, removeCartItem } from './store/reducers/cartReducer';
 import Checkout from './components/Checkout/Checkout';
 import DynamicPage from './components/DynamicPage/DynamicPage';
 import { getDynamicPages } from './store/reducers/dynamicPageReducer';
 import { getGeneralInfo, getStrings } from './store/reducers/appReducer';
 import Contact from './components/Contact/Contact';
-import { Style } from 'react-style-tag';
-import Loader from './components/common/Loader/Loader';
 import PropTypes from 'prop-types';
-import InjectLanguageBasedFontStyles from './components/common/InjectLanguageBasedFontStyles/InjectLanguageBasedFontStyles';
+import InjectLanguageSpecificFontStyles from './components/common/InjectLanguageSpecificFontStyles/InjectLanguageSpecificFontStyles';
+import LoaderWrapper from './components/common/Loader/LoaderWrapper';
 
 class App extends React.Component {
   state = {
-    showLoader: true
+    /**
+    We store prevLanguage in state so that we can then use it outside of componentDidUpdate and
+    be able to use it inside this.languageIsChanged method to then use it in
+    LoaderWrapper's shouldToggleLoader prop
+    */
+    prevLanguage: null
   };
 
   componentDidMount() {
+    this.fetchInitialComponentData();
+  }
+
+  componentDidUpdate(prevProps) {
+    this.syncPrevLanguageWithState(prevProps);
+  }
+
+  syncPrevLanguageWithState = (prevProps) => {
+    if (prevProps.lang !== this.props.lang) {
+      this.setState({ prevLanguage: prevProps.lang });
+    }
+  };
+
+  languageIsChanged = () => {
+    if (!this.props || !this.state.prevLanguage) {
+      return false;
+    }
+
+    return this.props.lang !== this.state.prevLanguage;
+  };
+
+  initialComponentDataIsLoadedAndValid = () => {
+    return (
+      this.props.cartData &&
+      this.props.pageNames &&
+      this.props.strings &&
+      Object.keys(this.props.cartData).length > 0 &&
+      Object.keys(this.props.general).length > 0
+    );
+  };
+
+  fetchInitialComponentData = () => {
     this.props.getCart();
     this.props.getDynamicPages();
     this.props.getStrings();
     this.props.getGeneralInfo();
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.state.showLoader) {
-      if (
-        this.props.cartData &&
-        Object.keys(this.props.cartData).length > 0 &&
-        Object.keys(this.props.general).length > 0
-      ) {
-        console.log('123');
-        setTimeout(() => {
-          this.setState({ showLoader: false });
-        }, 600);
-      }
-    } else {
-      if (this.props.lang !== prevProps.lang) {
-        // debugger;
-        this.setState({ showLoader: true });
-      }
-    }
-  }
+  };
 
   addCartItem = (id) => {
     this.props.addCartItem(id).then(() => {
@@ -58,18 +72,12 @@ class App extends React.Component {
     });
   };
 
-  changeAmnt = () => {
-    this.props.changeAmnt();
-  };
-
   render() {
-    if (this.state.showLoader) {
-      return <Loader />;
-    }
-
     return (
-      <>
-        <InjectLanguageBasedFontStyles />
+      <LoaderWrapper
+        shouldToggleLoader={this.initialComponentDataIsLoadedAndValid() || this.languageIsChanged()}
+      >
+        <InjectLanguageSpecificFontStyles />
 
         <Navbar
           changeAmnt={this.props.changeAmnt}
@@ -103,7 +111,7 @@ class App extends React.Component {
             <Footer general={this.props.general} />
           </div>
         </div>
-      </>
+      </LoaderWrapper>
     );
   }
 }
@@ -141,12 +149,13 @@ App.propTypes = {
     id: PropTypes.string,
     products: PropTypes.arrayOf(PropTypes.object)
   }),
-  pageNames: PropTypes.shape({
-    status: PropTypes.oneOfType([PropTypes.exact(1), PropTypes.exact(0)]),
-    pageNames: PropTypes.arrayOf(PropTypes.object)
-  }),
+  pageNames: PropTypes.array,
   general: PropTypes.shape({
     status: PropTypes.oneOfType([PropTypes.exact(1), PropTypes.exact(0)]),
     general: PropTypes.object
+  }),
+  strings: PropTypes.shape({
+    status: PropTypes.oneOfType([PropTypes.exact(1), PropTypes.exact(0)]),
+    strings: PropTypes.object
   })
 };
