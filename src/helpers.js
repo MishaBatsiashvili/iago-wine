@@ -1,3 +1,6 @@
+/**
+ * This function validates, serializes and then transforms the form fields into a query string
+ */
 export const serializeData = function (form) {
   const isInvalidFieldForSerialization = (field) => {
     if (!field) {
