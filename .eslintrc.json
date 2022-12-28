@@ -13,8 +13,7 @@
   "rules": {
     "react/jsx-newline": "warn",
     "newline-after-var": "warn",
-    "newline-before-return": "warn",
-    "newline-per-chained-call": "warn"
+    "newline-before-return": "warn"
   },
   "settings": {
     "react": {
