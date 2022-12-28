@@ -26,7 +26,7 @@ import withStrs from '../../hoc/withStrs';
 import Loader from '../common/Loader/Loader';
 
 /**
- * This component handles checkout, general process:
+ * This component handles checkout, checkout process:
  * 
  * step 1: Submit form and recieve verification code as message
  * 
