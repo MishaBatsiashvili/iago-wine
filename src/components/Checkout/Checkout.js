@@ -27,9 +27,9 @@ import Loader from '../common/Loader/Loader';
 
 /**
  * This component handles checkout, general checkout process:
- * 
+ *
  * step 1: Submit form and recieve verification code as message
- * 
+ *
  * step 2: Send verification code and form fields together to verify identity and complete checkout
  */
 class Checkout extends Component {
