@@ -10,11 +10,15 @@
     "sourceType": "module"
   },
   "plugins": ["react"],
-  "rules": {},  
+  "rules": {
+    "react/jsx-newline": "warn",
+    "newline-after-var": "warn",
+    "newline-before-return": "warn",
+    "newline-per-chained-call": "warn"
+  },
   "settings": {
     "react": {
       "version": "detect"
     }
   }
-
 }
