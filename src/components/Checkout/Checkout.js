@@ -26,11 +26,11 @@ import withStrs from '../../hoc/withStrs';
 import Loader from '../common/Loader/Loader';
 
 /**
- * This component handles checkout, checkout process:
+ * This component handles checkout, general checkout process:
  * 
  * step 1: Submit form and recieve verification code as message
  * 
- * step 2: Send verification code and form fields to verify and complete checkout
+ * step 2: Send verification code and form fields together to verify identity and complete checkout
  */
 class Checkout extends Component {
   state = {
@@ -122,6 +122,9 @@ class Checkout extends Component {
     });
   };
 
+  /**
+   * Send verification code and form fields to verify and complete checkout
+   */
   handleFinalCheckoutSubmit = (numberVerifCode) => {
     const resetServerErrors = () => {
       this.setState({
