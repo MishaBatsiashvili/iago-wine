@@ -4,6 +4,10 @@ import { useState } from 'react';
 import Loader from './Loader';
 import PropTypes from 'prop-types';
 
+/**
+ * This component recieves content, that must be loaded as a children prop
+ * and exposes other props as well that give control over when and how to hide and show the loader
+ */
 const LoaderWrapper = ({ children, isLoaded, extraMilisecondsToWait = null }) => {
   const [showLoader, setShowLoader] = useState(true);
 
@@ -13,6 +17,7 @@ const LoaderWrapper = ({ children, isLoaded, extraMilisecondsToWait = null }) =>
 
   const handleLoaderToggle = () => {
     let timeout = null;
+
     if (isLoaded) {
       if (extraMilisecondsToWait) {
         timeout = setTimeout(() => {
