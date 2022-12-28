@@ -1,7 +1,6 @@
 import axios from 'axios';
 import qs from 'querystring';
 
-
 const customAxios = axios.create({
    baseURL: process.env.REACT_APP_APIURL,
    withCredentials: true,
@@ -11,7 +10,6 @@ const customAxios = axios.create({
 });
 
 customAxios.interceptors.request.use(function (config) {
-   console.log(config);
    config.data = qs.stringify(config.data);
    return config;
 });

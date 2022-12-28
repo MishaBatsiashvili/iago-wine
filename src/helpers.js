@@ -1,30 +1,56 @@
 export const serializeData = function (form) {
+  const isInvalidFieldForSerialization = (field) => {
+    if (!field) {
+      return false;
+    }
 
-   // Setup our serialized data
-   let serialized = [];
+    return (
+      !field.name ||
+      field.disabled ||
+      field.type === 'file' ||
+      field.type === 'reset' ||
+      field.type === 'submit' ||
+      field.type === 'button'
+    );
+  };
 
-   // Loop through each field in the form
-   for (let i = 0; i < form.elements.length; i++) {
+  const serializeMultiSelectField = (field) => {
+    const serialized = [];
 
+    if (field.type === 'select-multiple') {
+      for (let n = 0; n < field.options.length; n++) {
+        if (!field.options[n].selected) continue;
+        serialized.push(
+          encodeURIComponent(field.name) + '=' + encodeURIComponent(field.options[n].value)
+        );
+      }
+    }
+
+    return serialized;
+  };
+
+  const serializeBasicAndCheckableFields = (field) => {
+    if ((field.type !== 'checkbox' && field.type !== 'radio') || field.checked) {
+      return [encodeURIComponent(field.name) + '=' + encodeURIComponent(field.value)];
+    }
+
+    return [];
+  };
+
+  const serialize = (form) => {
+    let serialized = [];
+    const formFields = form.elements;
+
+    for (let i = 0; i < formFields.length; i++) {
       let field = form.elements[i];
 
-      // Don't serialize fields without a name, submits, buttons, file and reset inputs, and disabled fields
-      if (!field.name || field.disabled || field.type === 'file' || field.type === 'reset' || field.type === 'submit' || field.type === 'button') continue;
+      if (isInvalidFieldForSerialization(field)) continue;
+      serialized = serialized.concat(serializeMultiSelectField(field));
+      serialized = serialized.concat(serializeBasicAndCheckableFields(field));
+    }
 
-      // If a multi-select, get all selections
-      if (field.type === 'select-multiple') {
-         for (let n = 0; n < field.options.length; n++) {
-            if (!field.options[n].selected) continue;
-            serialized.push(encodeURIComponent(field.name) + "=" + encodeURIComponent(field.options[n].value));
-         }
-      }
+    return serialized.join('&');
+  };
 
-      // Convert field data to a query string
-      else if ((field.type !== 'checkbox' && field.type !== 'radio') || field.checked) {
-         serialized.push(encodeURIComponent(field.name) + "=" + encodeURIComponent(field.value));
-      }
-   }
-
-   return serialized.join('&');
-
+  return serialize(form);
 };

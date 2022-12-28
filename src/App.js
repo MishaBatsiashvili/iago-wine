@@ -3,26 +3,25 @@ import './App.css';
 import 'swiper/css/swiper.min.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Switch, Route, Redirect } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Home from './components/Home/Home';
 import Navbar from './components/Navbar/Navbar';
 import Footer from './components/Footer/Footer';
-import { connect } from 'react-redux';
 import { addCartItem, changeAmnt, getCart, removeCartItem } from './store/reducers/cartReducer';
 import Checkout from './components/Checkout/Checkout';
 import DynamicPage from './components/DynamicPage/DynamicPage';
 import { getDynamicPages } from './store/reducers/dynamicPageReducer';
 import { getGeneralInfo, getStrings } from './store/reducers/appReducer';
 import Contact from './components/Contact/Contact';
-import PropTypes from 'prop-types';
 import InjectLanguageSpecificFontStyles from './components/common/InjectLanguageSpecificFontStyles/InjectLanguageSpecificFontStyles';
 import LoaderWrapper from './components/common/Loader/LoaderWrapper';
 
 class App extends React.Component {
+
   state = {
     /**
-    We store prevLanguage in state so that we can then use it outside of componentDidUpdate and
-    be able to use it inside this.languageIsChanged method to then use it in
-    LoaderWrapper's shouldToggleLoader prop
+    We store prevLanguage in state, because we need to use it outside of componentDidUpdate
     */
     prevLanguage: null
   };
