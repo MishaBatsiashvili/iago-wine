@@ -25,31 +25,60 @@ import withLang from '../../hoc/withLang';
 import withStrs from '../../hoc/withStrs';
 import Loader from '../common/Loader/Loader';
 
+/**
+ * This component handles checkout, general process:
+ * 
+ * step 1: Submit form and recieve verification code as message
+ * 
+ * step 2: Send verification code and form fields to verify and complete checkout
+ */
 class Checkout extends Component {
   state = {
     deliveryMethods: [],
     chosenDeliveryMethodIndex: 0,
     paymentMethods: [],
     deliveryDate: new Date(),
-
     showPhoneValidator: false,
     serverError: '',
-
     showCheckoutSuccess: false,
     invoiceId: null,
     invoiceKey: null,
-
     formData: {},
-
     showLoader: true
   };
 
-  validationSchema = () => {
+  componentDidMount() {
+    this.fetchAndSetInitialComponentData();
+  }
+
+  componentDidUpdate() {
+    this.hideLoaderWhenInitialComponentDataIsLoaded();
+  }
+
+  componentWillUnmount() {
+    this.props.resetCheckoutFormData();
+  }
+
+  hideLoaderWhenInitialComponentDataIsLoaded = () => {
+    const isRequiredDataLoaded =
+      this.state.deliveryMethods.length > 0 && this.state.paymentMethods.length > 0;
+
+    if (this.state.showLoader && isRequiredDataLoaded) {
+      setTimeout(() => {
+        this.setState({
+          showLoader: false
+        });
+      }, 300);
+    }
+  };
+
+  generateFormValidationSchema = () => {
     const configObj = {
       firstName: Yup.string().required(this.props.getStr('required_error')),
       lastName: Yup.string().required(this.props.getStr('required_error')),
       address: Yup.string().required(this.props.getStr('required_error')),
       phone: Yup.string()
+        /** This regex expression matches a phone number, e.g: 551 34 53 84 */
         .matches(/^(\+?)([\d]+)$/g, this.props.getStr('number_error'))
         .required(this.props.getStr('required_error')),
       email: Yup.string().email('Invalid email').required(this.props.getStr('required_error')),
@@ -61,7 +90,7 @@ class Checkout extends Component {
     return yupObj;
   };
 
-  deliveryMethodChanged = (index) => {
+  onDeliveryMethodChanged = (index) => {
     this.setState({
       chosenDeliveryMethodIndex: index
     });
@@ -81,45 +110,80 @@ class Checkout extends Component {
     }));
   };
 
-  setShowPhoneValidator = (isVisible) => {
+  setShowPhoneValidatorModal = (isVisible) => {
     this.setState({
       showPhoneValidator: isVisible
     });
   };
 
-  setShowSuccessPopup = (isVisible) => {
+  setShowSuccessModal = (isVisible) => {
     this.setState({
       showCheckoutSuccess: isVisible
     });
   };
 
-  onSubmitHandler = (verifCode) => {
-    // reset server error
+  handleFinalCheckoutSubmit = (numberVerifCode) => {
+    const resetServerErrors = () => {
+      this.setState({
+        serverError: ''
+      });
+    };
+
+    const setServerError = () => {
+      this.setState({
+        serverError: 'Error occured, try again later'
+      });
+    };
+
+    const isCheckoutSuccessful = (res) => res.status === 1;
+
+    const showCheckoutSuccessModal = (res) => {
+      this.setState({
+        showCheckoutSuccess: true,
+        invoiceId: res.invoice_id,
+        invoiceKey: res.invoice_key
+      });
+    };
+
+    const submitFormDataWithNumberVerifCode = () => {
+      resetServerErrors();
+      this.props.checkout(this.props.checkoutFormData, numberVerifCode).then((res) => {
+        this.setShowPhoneValidatorModal(false);
+        if (isCheckoutSuccessful(res)) {
+          showCheckoutSuccessModal(res);
+        } else {
+          setServerError();
+        }
+      });
+    };
+
+    submitFormDataWithNumberVerifCode();
+  };
+
+  handleRecieveNumberVerifCode = (values, { setSubmitting }) => {
     this.setState({
       serverError: ''
     });
-    // debugger;
-    this.props.checkout(this.props.checkoutFormData, verifCode).then((res) => {
-      this.setShowPhoneValidator(false);
-      if (res.status === 1) {
-        // show checkout success modal
-        this.setState({
-          showCheckoutSuccess: true,
-          invoiceId: res.invoice_id,
-          invoiceKey: res.invoice_key
-        });
-      } else {
-        // show error on top of form
-        this.setState({
-          serverError: 'Error occured, try again later'
-        });
-      }
-    });
+
+    const isInvalidValidCart = !this.props.cartData || this.props.cartData.products.length === 0;
+
+    if (isInvalidValidCart) {
+      this.setState({
+        serverError: 'Cart is Empty'
+      });
+
+      return;
+    }
+
+    this.setShowPhoneValidatorModal(true);
+    this.props.saveCheckoutFormData(this.generateSubmitFormData(values));
+    this.props.sendVerifCode(values.phone, this.props.cartData.id);
+
+    setSubmitting(false);
   };
 
   generateSubmitFormData = (values) => {
     const date = this.state.deliveryDate;
-    // debugger;
 
     return {
       firstName: values.firstName,
@@ -135,7 +199,7 @@ class Checkout extends Component {
     };
   };
 
-  componentDidMount() {
+  fetchAndSetInitialComponentData = () => {
     Promise.all([getDeliveryMethods(), getPaymentMethods()]).then((res) => {
       if (res[0].status === 1 && res[1].status === 1) {
         this.setState({
@@ -144,23 +208,7 @@ class Checkout extends Component {
         });
       }
     });
-  }
-
-  componentWillUnmount() {
-    this.props.resetCheckoutFormData();
-  }
-
-  componentDidUpdate() {
-    if (this.state.showLoader) {
-      if (this.state.deliveryMethods.length > 0 && this.state.paymentMethods.length > 0) {
-        setTimeout(() => {
-          this.setState({
-            showLoader: false
-          });
-        }, 300);
-      }
-    }
-  }
+  };
 
   render() {
     if (this.state.showLoader) {
@@ -173,7 +221,7 @@ class Checkout extends Component {
 
         <CheckoutSuccess
           showCheckoutSuccess={this.state.showCheckoutSuccess}
-          onClosePopup={() => this.setShowSuccessPopup(false)}
+          onClosePopup={() => this.setShowSuccessModal(false)}
           invoiceId={this.state.invoiceId}
           invoiceKey={this.state.invoiceKey}
           email={this.props.checkoutFormData ? this.props.checkoutFormData.email : ''}
@@ -181,8 +229,8 @@ class Checkout extends Component {
         />
 
         <PhoneValidator
-          onSubmitHandler={this.onSubmitHandler}
-          onClosePopup={() => this.setShowPhoneValidator(false)}
+          onSubmitHandler={this.handleFinalCheckoutSubmit}
+          onClosePopup={() => this.setShowPhoneValidatorModal(false)}
           showPhoneValidator={this.state.showPhoneValidator}
           getStr={this.props.getStr}
         />
@@ -214,45 +262,22 @@ class Checkout extends Component {
                   deliveryMethod: 1,
                   paymentMethod: 2
                 }}
-                validationSchema={() => this.validationSchema()}
-                onSubmit={(values, { setSubmitting }) => {
-                  this.setState({
-                    serverError: ''
-                  });
-
-                  if (!this.props.cartData || this.props.cartData.products.length === 0) {
-                    this.setState({
-                      serverError: 'Cart is Empty'
-                    });
-
-                    return;
-                  }
-
-                  // show mobile verification number
-                  this.setShowPhoneValidator(true);
-
-                  // save checkout form data in redux
-                  this.props.saveCheckoutFormData(this.generateSubmitFormData(values));
-
-                  // send mobile verification code
-                  this.props.sendVerifCode(values.phone, this.props.cartData.id);
-
-                  setSubmitting(false);
-                }}
+                validationSchema={() => this.generateFormValidationSchema()}
+                onSubmit={this.handleRecieveNumberVerifCode}
               >
-                {(fmk) => {
+                {(formikProps) => {
                   return (
                     <CheckoutForm
                       paymentMethods={this.state.paymentMethods}
                       deliveryMethods={this.generateDeliveryMethodsForSelect()}
                       chosenDeliveryMethodIndex={this.state.chosenDeliveryMethodIndex}
-                      deliveryMethodChanged={this.deliveryMethodChanged}
+                      deliveryMethodChanged={this.onDeliveryMethodChanged}
                       onDeliveryDateChanged={this.onDeliveryDateChanged}
                       deliveryDate={this.state.deliveryDate}
                       serverError={this.state.serverError}
                       lang={this.props.lang}
                       getStr={this.props.getStr}
-                      {...fmk}
+                      {...formikProps}
                     />
                   );
                 }}
