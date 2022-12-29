@@ -78,7 +78,7 @@ class Checkout extends Component {
       lastName: Yup.string().required(this.props.getStr('required_error')),
       address: Yup.string().required(this.props.getStr('required_error')),
       phone: Yup.string()
-        /** This regex expression matches a phone number, e.g: 551 34 53 84 */
+        // This regex expression matches a phone number, e.g: +1 551345384
         .matches(/^(\+?)([\d]+)$/g, this.props.getStr('number_error'))
         .required(this.props.getStr('required_error')),
       email: Yup.string().email('Invalid email').required(this.props.getStr('required_error')),
@@ -122,40 +122,40 @@ class Checkout extends Component {
     });
   };
 
+  resetServerFormError = () => {
+    this.setState({
+      serverError: ''
+    });
+  };
+
+  setServerFormError = (text = '') => {
+    this.setState({
+      serverError: text
+    });
+  };
+
+  showCheckoutSuccessModal = (res) => {
+    this.setState({
+      showCheckoutSuccess: true,
+      invoiceId: res.invoice_id,
+      invoiceKey: res.invoice_key
+    });
+  };
+
   /**
-   * Send verification code and form fields to verify and complete checkout
+   * Send verification code with form fields to verify and complete checkout
    */
   handleFinalCheckoutSubmit = (numberVerifCode) => {
-    const resetServerErrors = () => {
-      this.setState({
-        serverError: ''
-      });
-    };
-
-    const setServerError = () => {
-      this.setState({
-        serverError: 'Error occured, try again later'
-      });
-    };
-
     const isCheckoutSuccessful = (res) => res.status === 1;
 
-    const showCheckoutSuccessModal = (res) => {
-      this.setState({
-        showCheckoutSuccess: true,
-        invoiceId: res.invoice_id,
-        invoiceKey: res.invoice_key
-      });
-    };
-
     const submitFormDataWithNumberVerifCode = () => {
-      resetServerErrors();
+      this.resetServerFormError();
       this.props.checkout(this.props.checkoutFormData, numberVerifCode).then((res) => {
         this.setShowPhoneValidatorModal(false);
         if (isCheckoutSuccessful(res)) {
-          showCheckoutSuccessModal(res);
+          this.showCheckoutSuccessModal(res);
         } else {
-          setServerError();
+          this.setServerFormError('Error occured, try again later');
         }
       });
     };
@@ -213,76 +213,82 @@ class Checkout extends Component {
     });
   };
 
+  generateCheckoutSuccessProps = () => ({
+    showCheckoutSuccess: this.state.showCheckoutSuccess,
+    onClosePopup: () => this.setShowSuccessModal(false),
+    invoiceId: this.state.invoiceId,
+    invoiceKey: this.state.invoiceKey,
+    email: this.props.checkoutFormData ? this.props.checkoutFormData.email : '',
+    getStr: this.props.getStr
+  });
+
+  generatePhoneValidatorProps = () => ({
+    onSubmitHandler: this.handleFinalCheckoutSubmit,
+    onClosePopup: () => this.setShowPhoneValidatorModal(false),
+    showPhoneValidator: this.state.showPhoneValidator,
+    getStr: this.props.getStr
+  });
+
+  generateOrderDetailsProps = () => ({
+    removeCartItem: this.props.removeCartItem,
+    changeAmnt: this.props.changeAmnt,
+    lang: this.props.lang,
+    getStr: this.props.getStr,
+    cartData: this.props.cartData,
+    chosenDeliveryMethod: this.state.deliveryMethods[this.state.chosenDeliveryMethodIndex]
+  });
+
+  generateCheckoutFormProps = (formikProps) => ({
+    paymentMethods: this.state.paymentMethods,
+    deliveryMethods: this.generateDeliveryMethodsForSelect(),
+    chosenDeliveryMethodIndex: this.state.chosenDeliveryMethodIndex,
+    deliveryMethodChanged: this.onDeliveryMethodChanged,
+    onDeliveryDateChanged: this.onDeliveryDateChanged,
+    deliveryDate: this.state.deliveryDate,
+    serverError: this.state.serverError,
+    lang: this.props.lang,
+    getStr: this.props.getStr,
+    ...formikProps
+  });
+
   render() {
     if (this.state.showLoader) {
       return <Loader />;
     }
 
+    const initialFormValues = {
+      firstName: 'mish',
+      lastName: 'bats',
+      address: '123',
+      phone: '551384184',
+      email: 'mishabatsiashvili@yahoo.com',
+      comment: '',
+      deliveryMethod: 1,
+      paymentMethod: 2
+    };
+
     return (
       <div className={s.wrp}>
         <TitleBanner imageURL={bannerImg} text={this.props.getStr('checkout')} />
 
-        <CheckoutSuccess
-          showCheckoutSuccess={this.state.showCheckoutSuccess}
-          onClosePopup={() => this.setShowSuccessModal(false)}
-          invoiceId={this.state.invoiceId}
-          invoiceKey={this.state.invoiceKey}
-          email={this.props.checkoutFormData ? this.props.checkoutFormData.email : ''}
-          getStr={this.props.getStr}
-        />
+        <CheckoutSuccess {...this.generateCheckoutSuccessProps()} />
 
-        <PhoneValidator
-          onSubmitHandler={this.handleFinalCheckoutSubmit}
-          onClosePopup={() => this.setShowPhoneValidatorModal(false)}
-          showPhoneValidator={this.state.showPhoneValidator}
-          getStr={this.props.getStr}
-        />
-
+        <PhoneValidator {...this.generatePhoneValidatorProps()} />
+        
         <Container>
           <Row>
             <Col className={`order-lg-2`} xs={12} lg={5} xl={4}>
-              <OrderDetails
-                removeCartItem={this.props.removeCartItem}
-                changeAmnt={this.props.changeAmnt}
-                lang={this.props.lang}
-                getStr={this.props.getStr}
-                cartData={this.props.cartData}
-                chosenDeliveryMethod={
-                  this.state.deliveryMethods[this.state.chosenDeliveryMethodIndex]
-                }
-              />
+              <OrderDetails {...this.generateOrderDetailsProps()} />
             </Col>
 
             <Col className={`order-lg-1`} xs={12} lg={7} xl={8}>
               <Formik
-                initialValues={{
-                  firstName: 'mish',
-                  lastName: 'bats',
-                  address: '123',
-                  phone: '551384184',
-                  email: 'mishabatsiashvili@yahoo.com',
-                  comment: '',
-                  deliveryMethod: 1,
-                  paymentMethod: 2
-                }}
+                initialValues={initialFormValues}
                 validationSchema={() => this.generateFormValidationSchema()}
                 onSubmit={this.handleRecieveNumberVerifCode}
               >
                 {(formikProps) => {
-                  return (
-                    <CheckoutForm
-                      paymentMethods={this.state.paymentMethods}
-                      deliveryMethods={this.generateDeliveryMethodsForSelect()}
-                      chosenDeliveryMethodIndex={this.state.chosenDeliveryMethodIndex}
-                      deliveryMethodChanged={this.onDeliveryMethodChanged}
-                      onDeliveryDateChanged={this.onDeliveryDateChanged}
-                      deliveryDate={this.state.deliveryDate}
-                      serverError={this.state.serverError}
-                      lang={this.props.lang}
-                      getStr={this.props.getStr}
-                      {...formikProps}
-                    />
-                  );
+                  return <CheckoutForm {...this.generateCheckoutFormProps(formikProps)} />;
                 }}
               </Formik>
             </Col>
