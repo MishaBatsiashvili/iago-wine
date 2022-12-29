@@ -32,8 +32,11 @@ export const serializeData = function (form) {
     return serialized;
   };
 
-  const serializeTextualAndCheckableFields = (field) => {
-    if ((field.type !== 'checkbox' && field.type !== 'radio') || field.checked) {
+  const serializeTextualAndCheckableField = (field) => {
+    const invalidFieldTypes = ['checkbox', 'radio', 'select-multiple'];
+    const isFieldTextualOrChecked = isValidFieldType(field, invalidFieldTypes) || field.checked;
+
+    if (isFieldTextualOrChecked) {
       return [encodeURIComponent(field.name) + '=' + encodeURIComponent(field.value)];
     }
 
@@ -41,20 +44,24 @@ export const serializeData = function (form) {
   };
 
   const serialize = (form) => {
-    let serialized = [];
+    let serializedFields = [];
     const formFields = form.elements;
-    const serializationPipeline = [serializeMultiSelectField, serializeTextualAndCheckableFields];
+    const serializationPipeline = [serializeMultiSelectField, serializeTextualAndCheckableField];
 
     formFields.forEach((field) => {
       if (isInvalidFieldForSerialization(field)) return;
 
       serializationPipeline.forEach((func) => {
-        serialized = serialize.concat(func(field));
+        serializedFields = serialize.concat(func(field));
       });
     });
 
-    return serialized.join('&');
+    return serializedFields.join('&');
   };
 
   return serialize(form);
+};
+
+export const isValidFieldType = (field, invalidFieldTypes) => {
+  return invalidFieldTypes.filter((type) => type === field.type).length === 0;
 };
