@@ -21,9 +21,9 @@ class App extends React.Component {
 
   state = {
     /**
-    We store prevLanguage in state, because we need to use it outside of componentDidUpdate
+    We store props.lang's prevous value from prevProps in state, because we need to use it outside of componentDidUpdate
     */
-    prevLanguage: null
+    prevPropLang: null
   };
 
   componentDidMount() {
@@ -31,21 +31,21 @@ class App extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    this.syncPrevLanguageWithState(prevProps);
+    this.syncPrevPropLanguageWithState(prevProps);
   }
 
-  syncPrevLanguageWithState = (prevProps) => {
+  syncPrevPropLanguageWithState = (prevProps) => {
     if (prevProps.lang !== this.props.lang) {
-      this.setState({ prevLanguage: prevProps.lang });
+      this.setState({ prevPropLang: prevProps.lang });
     }
   };
 
   isLanguageChanged = () => {
-    if (!this.props || !this.state.prevLanguage) {
+    if (!this.props || !this.state.prevPropLang) {
       return false;
     }
 
-    return this.props.lang !== this.state.prevLanguage;
+    return this.props.lang !== this.state.prevPropLang;
   };
 
   isInitialComponentDataLoadedAndValid = () => {
