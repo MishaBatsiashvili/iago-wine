@@ -213,7 +213,7 @@ class Checkout extends Component {
     });
   };
 
-  generateCheckoutSuccessProps = () => ({
+  generateCheckoutSuccessComponentProps = () => ({
     showCheckoutSuccess: this.state.showCheckoutSuccess,
     onClosePopup: () => this.setShowSuccessModal(false),
     invoiceId: this.state.invoiceId,
@@ -222,14 +222,14 @@ class Checkout extends Component {
     getStr: this.props.getStr
   });
 
-  generatePhoneValidatorProps = () => ({
+  generatePhoneValidatorComponentProps = () => ({
     onSubmitHandler: this.handleFinalCheckoutSubmit,
     onClosePopup: () => this.setShowPhoneValidatorModal(false),
     showPhoneValidator: this.state.showPhoneValidator,
     getStr: this.props.getStr
   });
 
-  generateOrderDetailsProps = () => ({
+  generateOrderDetailsComponentProps = () => ({
     removeCartItem: this.props.removeCartItem,
     changeAmnt: this.props.changeAmnt,
     lang: this.props.lang,
@@ -238,7 +238,7 @@ class Checkout extends Component {
     chosenDeliveryMethod: this.state.deliveryMethods[this.state.chosenDeliveryMethodIndex]
   });
 
-  generateCheckoutFormProps = (formikProps) => ({
+  generateCheckoutFormComponentProps = (formikProps) => ({
     paymentMethods: this.state.paymentMethods,
     deliveryMethods: this.generateDeliveryMethodsForSelect(),
     chosenDeliveryMethodIndex: this.state.chosenDeliveryMethodIndex,
@@ -271,14 +271,14 @@ class Checkout extends Component {
       <div className={s.wrp}>
         <TitleBanner imageURL={bannerImg} text={this.props.getStr('checkout')} />
 
-        <CheckoutSuccess {...this.generateCheckoutSuccessProps()} />
+        <CheckoutSuccess {...this.generateCheckoutSuccessComponentProps()} />
 
-        <PhoneValidator {...this.generatePhoneValidatorProps()} />
-        
+        <PhoneValidator {...this.generatePhoneValidatorComponentProps()} />
+
         <Container>
           <Row>
             <Col className={`order-lg-2`} xs={12} lg={5} xl={4}>
-              <OrderDetails {...this.generateOrderDetailsProps()} />
+              <OrderDetails {...this.generateOrderDetailsComponentProps()} />
             </Col>
 
             <Col className={`order-lg-1`} xs={12} lg={7} xl={8}>
@@ -288,7 +288,7 @@ class Checkout extends Component {
                 onSubmit={this.handleRecieveNumberVerifCode}
               >
                 {(formikProps) => {
-                  return <CheckoutForm {...this.generateCheckoutFormProps(formikProps)} />;
+                  return <CheckoutForm {...this.generateCheckoutFormComponentProps(formikProps)} />;
                 }}
               </Formik>
             </Col>
